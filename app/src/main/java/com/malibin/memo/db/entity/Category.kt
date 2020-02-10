@@ -1,13 +1,25 @@
-package com.malibin.memo.db
+package com.malibin.memo.db.entity
 
 import androidx.annotation.ColorRes
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.malibin.memo.R
 import java.util.*
 
+@Entity
 data class Category(
+
+    @PrimaryKey
+    @ColumnInfo(name = "category_id")
     val id: String = UUID.randomUUID().toString(),
+
+    @ColumnInfo(name = "category_name")
     var name: String,
+
+    @ColumnInfo(name = "category_color_code")
     var colorCode: String = Color.GRAY.name
+
 ) {
     enum class Color(@ColorRes val resId: Int) {
         RED(R.color.categoryRed),
