@@ -51,10 +51,6 @@ dependencies {
     implementation "org.koin:koin-androidx-scope:2.0.1"
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
 
-    // Rxjava
-    implementation "executeAsyncInIoThread.reactivex.rxjava2:rxjava:2.2.0"
-    implementation "executeAsyncInIoThread.reactivex.rxjava2:rxandroid:2.0.2"
-
     // Glide Image Tool
     implementation 'com.github.bumptech.glide:glide:4.9.0'
 }
