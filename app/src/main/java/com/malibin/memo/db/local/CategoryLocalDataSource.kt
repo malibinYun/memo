@@ -3,27 +3,37 @@ package com.malibin.memo.db.local
 import com.malibin.memo.db.CategoryDataSource
 import com.malibin.memo.db.dao.CategoryDao
 import com.malibin.memo.db.entity.Category
+import com.malibin.memo.util.AsyncExecutor
 
-class CategoryLocalDataSource private constructor(categoryDao: CategoryDao) : CategoryDataSource {
+class CategoryLocalDataSource private constructor(
+    private val asyncExecutor: AsyncExecutor,
+    private val categoryDao: CategoryDao
+) : CategoryDataSource {
 
-    override fun getCategories(callback: (memo: List<Category>) -> Unit) {
-
+    override fun getCategories(callback: (categories: List<Category>) -> Unit) {
+        asyncExecutor.ioThread.execute {
+            val categories = categoryDao.getCategories()
+            asyncExecutor.mainThread.execute { callback(categories) }
+        }
     }
 
-    override fun getCategory(categoryId: String, callback: (memo: Category) -> Unit) {
-
+    override fun getCategory(categoryId: String, callback: (category: Category) -> Unit) {
+        asyncExecutor.ioThread.execute {
+            val category = categoryDao.getCategoryById(categoryId)
+            asyncExecutor.mainThread.execute { callback(category) }
+        }
     }
 
     override fun saveCategory(category: Category) {
-
+        asyncExecutor.ioThread.execute { categoryDao.insertCategory(category) }
     }
 
     override fun modifyCategory(category: Category) {
-
+        asyncExecutor.ioThread.execute { categoryDao.updateCategory(category) }
     }
 
     override fun deleteCategory(categoryId: String) {
-
+        asyncExecutor.ioThread.execute { categoryDao.deleteCategoryById(categoryId) }
     }
 
     companion object {
@@ -31,8 +41,11 @@ class CategoryLocalDataSource private constructor(categoryDao: CategoryDao) : Ca
 
         @JvmStatic
         @Synchronized
-        fun getInstance(categoryDao: CategoryDao): CategoryLocalDataSource = INSTANCE
-            ?: CategoryLocalDataSource(categoryDao).apply { INSTANCE = this }
+        fun getInstance(
+            asyncExecutor: AsyncExecutor,
+            categoryDao: CategoryDao
+        ): CategoryLocalDataSource = INSTANCE
+            ?: CategoryLocalDataSource(asyncExecutor, categoryDao).apply { INSTANCE = this }
     }
 
 }

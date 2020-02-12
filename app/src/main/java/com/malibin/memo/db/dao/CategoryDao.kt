@@ -12,7 +12,7 @@ interface CategoryDao {
     fun getCategories(): List<Category>
 
     @Query("SELECT * FROM category WHERE category_id = :categoryId")
-    fun getCategoryById(categoryId: String): Category?
+    fun getCategoryById(categoryId: String): Category
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCategory(category: Category)

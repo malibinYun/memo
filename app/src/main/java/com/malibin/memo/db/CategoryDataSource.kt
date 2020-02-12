@@ -4,9 +4,9 @@ import com.malibin.memo.db.entity.Category
 
 interface CategoryDataSource {
 
-    fun getCategories(callback: (memo: List<Category>) -> Unit)
+    fun getCategories(callback: (categories: List<Category>) -> Unit)
 
-    fun getCategory(categoryId: String, callback: (memo: Category) -> Unit)
+    fun getCategory(categoryId: String, callback: (category: Category) -> Unit)
 
     fun saveCategory(category: Category)
 
