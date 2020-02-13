@@ -1,7 +1,9 @@
 package com.malibin.memo.db.entity
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
@@ -21,11 +23,24 @@ data class Memo(
     @ColumnInfo(name = "memo_category_id")
     var categoryId: String = "",
 
-    @ColumnInfo(name = "memo_is_important")
-    var isImportant: Boolean = false,
-
     @ColumnInfo(name = "memo_content")
     var content: String = ""
 
-    // var images:
-)
+) {
+    @ColumnInfo(name = "memo_is_important")
+    var isImportant: Boolean = false
+
+    @ColumnInfo(name = "memo_thumbnail")
+    var thumbnailByteCode: ByteArray? = null
+
+    @ColumnInfo(name = "memo_image_count")
+    var imageCount: Int = 0
+
+    @Ignore
+    val images: MutableList<Bitmap> = ArrayList()
+
+    fun loadImages(images: List<Bitmap>) {
+        this.images.addAll(images)
+    }
+
+}
