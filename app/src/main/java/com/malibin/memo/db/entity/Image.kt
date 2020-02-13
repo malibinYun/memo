@@ -2,10 +2,18 @@ package com.malibin.memo.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = Memo::class,
+        parentColumns = ["memo_id"],
+        childColumns = ["memo_id"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class Image(
 
     @PrimaryKey
@@ -16,7 +24,7 @@ data class Image(
     val ofMemoId: String,
 
     @ColumnInfo(name = "byte_code", typeAffinity = ColumnInfo.BLOB)
-    val byteCode: ByteArray
+    var byteCode: ByteArray
 
 ) {
     override fun equals(other: Any?): Boolean {
