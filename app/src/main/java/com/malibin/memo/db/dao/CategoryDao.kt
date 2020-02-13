@@ -7,10 +7,10 @@ import com.malibin.memo.db.entity.Category
 interface CategoryDao {
 
     @Query("SELECT * FROM category")
-    fun getCategories(): List<Category>
+    fun getAllCategories(): List<Category>
 
     @Query("SELECT * FROM category WHERE category_id = :categoryId")
-    fun getCategoryById(categoryId: String): Category
+    fun getCategoryById(categoryId: String): Category?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCategory(category: Category)
@@ -20,5 +20,8 @@ interface CategoryDao {
 
     @Query("DELETE FROM category WHERE category_id = :categoryId")
     fun deleteCategoryById(categoryId: String)
+
+    @Query("DELETE FROM category")
+    fun deleteAllCategories()
 
 }

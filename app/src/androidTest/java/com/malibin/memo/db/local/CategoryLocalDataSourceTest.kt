@@ -14,7 +14,7 @@ class CategoryLocalDataSourceTest : KoinTest {
     private val localDataSource: CategoryLocalDataSource by inject()
     private var insertedCategoryId = ""
 
-    lateinit var countDownLatch: CountDownLatch
+    private lateinit var countDownLatch: CountDownLatch
 
     @Before
     fun prepareCountDownLatch() {
@@ -62,4 +62,23 @@ class CategoryLocalDataSourceTest : KoinTest {
         countDownLatch.await()
         assertEquals(modifiedCategory, retrievedCategory)
     }
+
+    @Test(timeout = 2000)
+    fun verifyDeleteCategory() {
+        val newCategory = Category(name = "Test")
+        var deletedCategory: Category? = Category(name = "NotDeleted")
+
+        localDataSource.saveCategory(newCategory)
+        insertedCategoryId = newCategory.id
+
+        localDataSource.deleteCategory(newCategory.id)
+
+        localDataSource.getCategory(newCategory.id) {
+            deletedCategory = it
+            countDownLatch.countDown()
+        }
+        countDownLatch.await()
+        assertNull(deletedCategory)
+    }
+
 }
