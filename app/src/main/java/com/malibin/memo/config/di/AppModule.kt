@@ -2,7 +2,7 @@ package com.malibin.memo.config.di
 
 import androidx.room.Room
 import com.malibin.memo.db.AppDatabase
-import com.malibin.memo.db.local.CategoryLocalDataSource
+import com.malibin.memo.db.source.local.CategoryLocalDataSource
 import com.malibin.memo.util.AsyncExecutor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module

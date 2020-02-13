@@ -1,4 +1,4 @@
-package com.malibin.memo.db
+package com.malibin.memo.db.source
 
 import com.malibin.memo.db.entity.Category
 

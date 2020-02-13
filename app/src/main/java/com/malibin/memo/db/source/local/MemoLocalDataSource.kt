@@ -1,6 +1,6 @@
-package com.malibin.memo.db.local
+package com.malibin.memo.db.source.local
 
-import com.malibin.memo.db.MemoDataSource
+import com.malibin.memo.db.source.MemoDataSource
 import com.malibin.memo.db.dao.MemoDao
 import com.malibin.memo.db.entity.Memo
 
@@ -25,10 +25,6 @@ class MemoLocalDataSource private constructor(
     }
 
     override fun deleteMemo(memoId: String) {
-
-    }
-
-    private fun handleError(t: Throwable) {
 
     }
 

@@ -1,4 +1,4 @@
-package com.malibin.memo.db.local
+package com.malibin.memo.db.source.local
 
 import com.malibin.memo.db.entity.Category
 import org.junit.After

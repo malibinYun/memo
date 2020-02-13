@@ -1,6 +1,6 @@
-package com.malibin.memo.db.local
+package com.malibin.memo.db.source.local
 
-import com.malibin.memo.db.CategoryDataSource
+import com.malibin.memo.db.source.CategoryDataSource
 import com.malibin.memo.db.dao.CategoryDao
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.util.AsyncExecutor
