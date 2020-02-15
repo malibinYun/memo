@@ -2,6 +2,8 @@ package com.malibin.memo.config.di
 
 import androidx.room.Room
 import com.malibin.memo.db.AppDatabase
+import com.malibin.memo.db.CategoryRepository
+import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.db.source.local.CategoryLocalDataSource
 import com.malibin.memo.db.source.local.MemoLocalDataSource
 import com.malibin.memo.util.AsyncExecutor
@@ -22,14 +24,19 @@ val localDataSourceModule = module {
     single {
         CategoryLocalDataSource.getInstance(get(), get<AppDatabase>().categoryDao())
     }
-
     single {
         MemoLocalDataSource.getInstance(get(), get<AppDatabase>().memoDao())
     }
 }
 
+val repositoryModule = module {
+    single { CategoryRepository(get()) }
+    single { MemoRepository(get()) }
+}
+
 val diModules = listOf(
     asyncExecutorModule,
     appDataBaseModule,
-    localDataSourceModule
+    localDataSourceModule,
+    repositoryModule
 )
