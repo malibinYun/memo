@@ -177,6 +177,27 @@ class MemoLocalDataSourceTest : KoinTest {
         assertNull(deletedMemo)
     }
 
+    @Test(timeout = 2000)
+    fun saveMemo_retrievesImages() {
+        var newMemo = Memo()
+        val retrievedImages: MutableList<Image> = ArrayList()
+        createMemoThreeImage {
+            newMemo = it
+            insertedMemoId = it.id
+            localDataSource.saveMemo(it)
+            countDownLatch.countDown()
+        }
+        countDownLatch.await()
+        prepareCountDownLatch()
+
+        localDataSource.getImagesOfMemo(newMemo.id) {
+            retrievedImages.addAll(it)
+            countDownLatch.countDown()
+        }
+        countDownLatch.await()
+        assertEquals(newMemo.images, retrievedImages)
+    }
+
     private fun createMemoOneImage(
         title: String = "test",
         content: String = "test content",
