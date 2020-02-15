@@ -29,7 +29,7 @@ data class Memo(
     @ColumnInfo(name = "memo_is_important")
     var isImportant: Boolean = false
 
-    @ColumnInfo(name = "memo_thumbnail")
+    @ColumnInfo(name = "memo_thumbnail", typeAffinity = ColumnInfo.BLOB)
     var thumbnailByteCode: ByteArray? = null
 
     @ColumnInfo(name = "memo_image_count")
@@ -40,6 +40,25 @@ data class Memo(
 
     fun loadImages(images: List<Image>) {
         this.images.addAll(images)
+    }
+
+    fun addImage(image: Image) {
+        if (images.isEmpty()) thumbnailByteCode = image.byteCode.copyOf()
+        this.images.add(image)
+        imageCount++
+    }
+
+    fun addImages(images: List<Image>) {
+        if (this.images.isEmpty()) thumbnailByteCode = images[0].byteCode.copyOf()
+        this.images.addAll(images)
+        imageCount += images.size
+    }
+
+    fun removeImageAt(index: Int): Image {
+        val removedImage = images.removeAt(index)
+        thumbnailByteCode = if (images.size < 1) null else images[0].byteCode.copyOf()
+        imageCount--
+        return removedImage
     }
 
 }
