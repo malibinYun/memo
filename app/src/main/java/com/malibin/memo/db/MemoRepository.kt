@@ -7,8 +7,8 @@ import com.malibin.memo.db.source.MemoDataSource
 class MemoRepository(
     private val memoLocalDataSource: MemoDataSource
 ) : MemoDataSource {
-    override fun getMemos(callback: (memo: List<Memo>) -> Unit) {
-        memoLocalDataSource.getMemos(callback)
+    override fun getMemosNoImages(callback: (memo: List<Memo>) -> Unit) {
+        memoLocalDataSource.getMemosNoImages(callback)
     }
 
     override fun getMemo(memoId: String, callback: (memo: Memo?) -> Unit) {

@@ -72,7 +72,7 @@ class MemoLocalDataSourceTest : KoinTest {
         }
         countDownLatch.await()
         assertEquals(newMemo, retrievedMemo)
-        assertEquals(newMemo.images, retrievedMemo?.images)
+        assertEquals(newMemo.getImages(), retrievedMemo?.getImages())
     }
 
     @Test(timeout = 2000)
@@ -124,7 +124,7 @@ class MemoLocalDataSourceTest : KoinTest {
         countDownLatch.await()
         assertEquals(newMemo, retrievedMemo)
         // 썸네일 제대로 바뀌는지 검사
-        assertArrayEquals(newMemo.thumbnailByteCode, retrievedMemo!!.images[0].byteCode)
+        assertArrayEquals(newMemo.thumbnailByteCode, retrievedMemo!!.getImages()[0].byteCode)
     }
 
     @Test(timeout = 2000)
@@ -195,7 +195,7 @@ class MemoLocalDataSourceTest : KoinTest {
             countDownLatch.countDown()
         }
         countDownLatch.await()
-        assertEquals(newMemo.images, retrievedImages)
+        assertEquals(newMemo.getImages(), retrievedImages)
     }
 
     private fun createMemoOneImage(

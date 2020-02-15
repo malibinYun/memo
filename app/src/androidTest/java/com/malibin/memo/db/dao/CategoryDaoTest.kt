@@ -90,7 +90,6 @@ class CategoryDaoTest : KoinTest {
         assertEquals(0, retrievesCategories.size)
     }
 
-
     companion object {
         private const val DEFAULT_NAME = "default category"
         private val DEFAULT_CATEGORY = Category(name = DEFAULT_NAME)
