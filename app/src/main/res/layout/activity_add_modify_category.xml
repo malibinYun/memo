@@ -5,6 +5,13 @@
 
     <data>
 
+        <import type="com.malibin.memo.db.entity.Category" />
+
+        <import type="android.app.Activity" />
+
+        <variable
+            name="addModifyCategoryVM"
+            type="com.malibin.memo.ui.category.AddModifyCategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,6 +48,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="14dp"
             android:paddingBottom="10dp"
+            android:text="@={addModifyCategoryVM.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -87,6 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/selector_btn_category_red"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.RED}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.RED)}"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_orange"
@@ -100,6 +110,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_orange"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.ORANGE}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.ORANGE)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_red"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_yellow"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_red" />
@@ -110,6 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_yellow"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.YELLOW}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.YELLOW)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_orange"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_green"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_orange" />
@@ -120,6 +134,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_green"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.GREEN}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.GREEN)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_yellow"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_blue"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_yellow" />
@@ -130,6 +146,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="32dp"
                 android:button="@drawable/selector_btn_category_blue"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.BLUE}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.BLUE)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_green"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_yellow" />
@@ -142,6 +160,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_navy"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.NAVY}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.NAVY)}"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_purple"
@@ -153,6 +173,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_purple"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.PURPLE}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.PURPLE)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_navy"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_pink"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_navy" />
@@ -163,6 +185,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_pink"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.PINK}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.PINK)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_purple"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_gray"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_purple" />
@@ -173,6 +197,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:button="@drawable/selector_btn_category_gray"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.GRAY}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.GRAY)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_pink"
                 app:layout_constraintRight_toLeftOf="@id/rb_color_black"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_pink" />
@@ -182,6 +208,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/selector_btn_category_black"
+                android:checked="@{addModifyCategoryVM.selectedColor == Category.Color.BLACK}"
+                android:onClick="@{(v) -> addModifyCategoryVM.updateSelectedColor(Category.Color.BLACK)}"
                 app:layout_constraintLeft_toRightOf="@id/rb_color_gray"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rb_color_gray" />
@@ -202,6 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:onClick="@{(view)->((Activity)(view.getContext())).finish()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

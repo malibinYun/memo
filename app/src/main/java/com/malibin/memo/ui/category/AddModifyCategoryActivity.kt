@@ -1,26 +1,27 @@
 package com.malibin.memo.ui.category
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityAddModifyCategoryBinding
+import org.koin.android.ext.android.inject
 
 class AddModifyCategoryActivity : AppCompatActivity() {
+
+    private val viewModelFactory: ViewModelProvider.Factory by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val viewModel =
+            ViewModelProvider(this, viewModelFactory)[AddModifyCategoryViewModel::class.java]
+
         val binding: ActivityAddModifyCategoryBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_add_modify_category)
 
-        Log.d("Malibin Debug", "${getResources().getDisplayMetrics().density * 160f}")
-
-        val metrics = DisplayMetrics()
-        val adf = getWindowManager().getDefaultDisplay().getMetrics(metrics)
-
-        Log.d("Malibin Debug", "width = ${metrics.widthPixels} height = ${metrics.heightPixels}")
+        binding.addModifyCategoryVM = viewModel
+        binding.lifecycleOwner = this
     }
 }
