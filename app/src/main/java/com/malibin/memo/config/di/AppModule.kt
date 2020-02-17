@@ -1,42 +1,21 @@
 package com.malibin.memo.config.di
 
-import androidx.room.Room
-import com.malibin.memo.db.AppDatabase
-import com.malibin.memo.db.CategoryRepository
-import com.malibin.memo.db.MemoRepository
-import com.malibin.memo.db.source.local.CategoryLocalDataSource
-import com.malibin.memo.db.source.local.MemoLocalDataSource
 import com.malibin.memo.util.AsyncExecutor
-import org.koin.android.ext.koin.androidContext
+import com.malibin.memo.util.ViewModelFactory
 import org.koin.dsl.module
 
 val asyncExecutorModule = module {
     single { AsyncExecutor() }
 }
 
-val appDataBaseModule = module {
-    single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database").build()
-    }
-}
-
-val localDataSourceModule = module {
-    single {
-        CategoryLocalDataSource.getInstance(get(), get<AppDatabase>().categoryDao())
-    }
-    single {
-        MemoLocalDataSource.getInstance(get(), get<AppDatabase>().memoDao())
-    }
-}
-
-val repositoryModule = module {
-    single { CategoryRepository(get()) }
-    single { MemoRepository(get()) }
+val viewModelFactory = module {
+    single { ViewModelFactory(get(), get()) }
 }
 
 val diModules = listOf(
     asyncExecutorModule,
     appDataBaseModule,
     localDataSourceModule,
-    repositoryModule
+    repositoryModule,
+    viewModelFactory
 )
