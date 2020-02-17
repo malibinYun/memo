@@ -6,4 +6,5 @@
     <string name="complete">완료</string>
     <string name="category_modified">카테고리가 수정되었습니다.</string>
     <string name="category_added">카테고리가 추가되었습니다.</string>
+    <string name="save">저장하기</string>
 </resources>
