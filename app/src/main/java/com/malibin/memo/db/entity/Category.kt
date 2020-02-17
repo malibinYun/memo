@@ -27,7 +27,7 @@ data class Category(
         YELLOW(R.color.categoryYellow),
         GREEN(R.color.categoryGreen),
         BLUE(R.color.categoryBlue),
-        INDIGO(R.color.categoryIndigo),
+        NAVY(R.color.categoryNavy),
         PURPLE(R.color.categoryPurple),
         PINK(R.color.categoryPink),
         GRAY(R.color.categoryGray),

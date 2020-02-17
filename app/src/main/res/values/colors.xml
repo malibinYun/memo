@@ -9,9 +9,12 @@
     <color name="categoryYellow">#F2EF92</color>
     <color name="categoryGreen">#6BC796</color>
     <color name="categoryBlue">#5FA3E4</color>
-    <color name="categoryIndigo">#6278C4</color>
+    <color name="categoryNavy">#6278C4</color>
     <color name="categoryPurple">#A789E9</color>
     <color name="categoryPink">#f39aba</color>
     <color name="categoryGray">#B9C6Cf</color>
     <color name="categoryBlack">#000000</color>
+
+    <color name="f0Gray">#F0F0F0</color>
+    <color name="winterSky">#6998F2</color>
 </resources>
