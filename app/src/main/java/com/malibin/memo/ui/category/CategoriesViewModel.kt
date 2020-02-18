@@ -8,7 +8,7 @@ import com.malibin.memo.db.entity.Category
 import com.malibin.memo.util.BaseViewModel
 import java.lang.RuntimeException
 
-class CategoryViewModel(
+class CategoriesViewModel(
     private val categoryRepository: CategoryRepository
 ) : BaseViewModel() {
 

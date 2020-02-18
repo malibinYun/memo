@@ -1,6 +1,6 @@
 package com.malibin.memo.ui.category
 
-interface CategoryNavigator {
+interface CategoriesNavigator {
 
     fun addNewCategory()
 

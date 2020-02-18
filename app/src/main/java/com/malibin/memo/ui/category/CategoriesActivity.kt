@@ -15,31 +15,31 @@ import com.malibin.memo.util.MEMO_CATEGORY_FILTER_RESULT
 import com.malibin.memo.util.MEMO_IMPORTANT_FILTER_RESULT
 import org.koin.android.ext.android.inject
 
-class CategoryActivity : AppCompatActivity(), CategoryNavigator, CategoryItemNavigator {
+class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesItemNavigator {
 
     private val viewModelFactory: ViewModelProvider.Factory by inject()
-    private lateinit var categoryViewModel: CategoryViewModel
+    private lateinit var categoriesViewModel: CategoriesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        categoryViewModel =
-            ViewModelProvider(this, viewModelFactory)[CategoryViewModel::class.java]
+        categoriesViewModel =
+            ViewModelProvider(this, viewModelFactory)[CategoriesViewModel::class.java]
 
-        subscribeToastMessage(categoryViewModel)
+        subscribeToastMessage(categoriesViewModel)
 
         val binding: ActivityCategoryBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_category)
 
         binding.lifecycleOwner = this
-        binding.categoryVM = categoryViewModel
-        binding.categoryNavigator = this
+        binding.categoriesVM = categoriesViewModel
+        binding.categoriesNavigator = this
     }
 
     override fun onBackPressed() {
-        val isEditMode = categoryViewModel.isEditMode.value
+        val isEditMode = categoriesViewModel.isEditMode.value
         if (isEditMode == true) {
-            categoryViewModel.cancelEditCategories()
+            categoriesViewModel.cancelEditCategories()
             return
         }
         super.onBackPressed()
@@ -72,7 +72,7 @@ class CategoryActivity : AppCompatActivity(), CategoryNavigator, CategoryItemNav
         startActivityForResult(intent, REQUEST_CODE_MODIFY_CATEGORY)
     }
 
-    private fun subscribeToastMessage(viewModel: CategoryViewModel) {
+    private fun subscribeToastMessage(viewModel: CategoriesViewModel) {
         viewModel.toastMessage.observe(this, Observer { stringId ->
             Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
         })
