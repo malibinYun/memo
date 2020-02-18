@@ -6,6 +6,16 @@
     <data>
 
         <import type="android.app.Activity" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="categoryVM"
+            type="com.malibin.memo.ui.category.CategoryViewModel" />
+
+        <variable
+            name="categoryNavigator"
+            type="com.malibin.memo.ui.category.CategoryNavigator" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:onClick="@{(view)->((Activity)(view.getContext())).finish()}"
+                android:visibility="@{categoryVM.isEditMode() ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:onClick="@{(view)->((Activity)(view.getContext())).finish()}"
+                android:onClick="@{(view) -> categoryVM.cancelEditCategories()}"
+                android:visibility="@{categoryVM.isEditMode() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,10 +63,12 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center"
+                android:onClick="@{(view) -> categoryVM.finishEditCategories()}"
                 android:paddingLeft="16dp"
                 android:paddingRight="10dp"
                 android:text="@string/complete"
                 android:textSize="18sp"
+                android:visibility="@{categoryVM.isEditMode() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -110,6 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:onClick="@{(view) -> categoryNavigator.filterWithImportant()}"
                 android:text="@string/important_memo"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -121,6 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:onClick="@{(view) -> categoryNavigator.filterWithAll()}"
                 android:text="@string/all_memo"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@+id/btn_important_memo"
@@ -149,6 +165,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="56dp"
+            android:visibility="@{categoryVM.isEditMode() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -178,6 +195,7 @@
                 android:id="@+id/tbtn_add_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(view) -> categoryNavigator.addNewCategory()}"
                 android:paddingStart="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/add_category"
@@ -191,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:onClick="@{(view) -> categoryVM.activateEditMode()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ibtn_add_category"
                 app:srcCompat="@drawable/img_edit_category" />
@@ -199,6 +218,7 @@
                 android:id="@+id/tbtn_edit_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(view) -> categoryVM.activateEditMode()}"
                 android:paddingStart="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/edit_category"

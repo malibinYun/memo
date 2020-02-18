@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.MemoRepository
+import com.malibin.memo.ui.category.CategoryViewModel
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
 import java.lang.IllegalArgumentException
 
@@ -15,6 +16,7 @@ class ViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
 
+            CategoryViewModel::class.java,
             AddModifyCategoryViewModel::class.java ->
                 modelClass.getConstructor(CATEGORY_REPO).newInstance(categoryRepository)
 

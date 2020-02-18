@@ -51,6 +51,7 @@ class CategoryViewModel(
             throw RuntimeException("finishEditCategories cannot call isEditMode is false")
         }
         if (itemsToDelete.isEmpty()) {
+            isEditMode.value = false
             return
         }
         for (item in itemsToDelete) {
