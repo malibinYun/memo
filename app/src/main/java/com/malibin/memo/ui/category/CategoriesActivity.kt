@@ -3,16 +3,19 @@ package com.malibin.memo.ui.category
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityCategoryBinding
+import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryActivity
 import com.malibin.memo.util.MEMO_ALL_FILTER_RESULT
 import com.malibin.memo.util.MEMO_CATEGORY_FILTER_RESULT
 import com.malibin.memo.util.MEMO_IMPORTANT_FILTER_RESULT
+import kotlinx.android.synthetic.main.activity_category.*
 import org.koin.android.ext.android.inject
 
 class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesItemNavigator {

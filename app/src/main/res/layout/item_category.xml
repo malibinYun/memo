@@ -1,49 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_category"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/item_category_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/circle_shape"
-        android:backgroundTint="@color/categoryGreen"
-        android:foregroundGravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/item_category_name"
-        app:layout_constraintStart_toEndOf="@+id/item_category_delete_space"
-        app:layout_constraintTop_toTopOf="@+id/item_category_name"
-        app:layout_constraintVertical_bias="0.4"
-        app:srcCompat="@drawable/circle_shape" />
+    <data>
 
-    <TextView
-        android:id="@+id/item_category_name"
-        android:layout_width="wrap_content"
+        <import type="android.view.View" />
+
+        <variable
+            name="category"
+            type="com.malibin.memo.db.entity.Category" />
+
+        <variable
+            name="categoriesViewModel"
+            type="com.malibin.memo.ui.category.CategoriesViewModel" />
+
+        <variable
+            name="itemClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="itemDeleteClickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_category"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginBottom="8dp"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_category_color"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@android:color/white">
 
-    <ImageView
-        android:id="@+id/item_category_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/item_category_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_category_name"
-        app:srcCompat="@drawable/btn_minus_circle" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{!(categoriesViewModel == null) &amp;&amp; categoriesViewModel.isEditMode() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout6">
 
-    <Space
-        android:id="@+id/item_category_delete_space"
-        android:layout_width="16dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/item_category_delete"
-        app:layout_constraintStart_toEndOf="@+id/item_category_delete"
-        app:layout_constraintTop_toTopOf="@+id/item_category_delete" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/item_category_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{itemDeleteClickListener}"
+                android:paddingStart="4dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/btn_minus_circle" />
+
+            <Space
+                android:id="@+id/item_category_delete_space"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/item_category_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_category_delete"
+                app:layout_constraintTop_toTopOf="@+id/item_category_delete" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{itemClickListener}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/item_category_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_shape"
+                android:foregroundGravity="center"
+                app:bind_category_color="@{category.colorCode}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/circle_shape" />
+
+            <TextView
+                android:id="@+id/item_category_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@{category.name}"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_category_color"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -21,6 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         tools:context=".ui.category.CategoriesActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -151,6 +152,9 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="56dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="56dp"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
