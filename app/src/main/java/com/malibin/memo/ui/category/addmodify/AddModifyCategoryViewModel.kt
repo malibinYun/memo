@@ -69,7 +69,7 @@ class AddModifyCategoryViewModel(
     private fun modifyCategory(currentName: String, currentColor: String) {
         val currentCategoryId =
             categoryId ?: throw RuntimeException("update called but category does not loaded")
-        val updatedCategory = Category(currentName, currentColor, currentCategoryId)
+        val updatedCategory = Category(currentCategoryId, currentName, currentColor)
         categoryRepository.modifyCategory(updatedCategory)
         _isSuccess.value = true
         _toastMessage.value = R.string.category_modified
