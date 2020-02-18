@@ -39,6 +39,7 @@ dependencies {
     // Design / layout / etc..
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Room Database
     implementation "androidx.room:room-runtime:2.2.3"

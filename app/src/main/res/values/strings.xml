@@ -14,4 +14,6 @@
     <string name="edit_category_canceled">카테고리 편집이 취소되었습니다.</string>
     <string name="edit_category_is_finished">카테고리 편집이 완료되었습니다.</string>
     <string name="cannot_delete_basic_category">기본 카테고리는 지울 수 없습니다.</string>
+    <string name="title">Title</string>
+    <string name="input_content">내용을 입력해주세요</string>
 </resources>
