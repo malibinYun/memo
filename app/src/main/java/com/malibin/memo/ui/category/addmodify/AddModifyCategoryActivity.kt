@@ -1,6 +1,5 @@
 package com.malibin.memo.ui.category.addmodify
 
-import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityAddModifyCategoryBinding
+import com.malibin.memo.util.CATEGORY_SAVE_RESULT_OK
 import org.koin.android.ext.android.inject
 
-class AddModifyCategoryActivity : AppCompatActivity() {
+class AddModifyCategoryActivity : AppCompatActivity(), AddModifyCategoryNavigator {
 
     private val viewModelFactory: ViewModelProvider.Factory by inject()
 
@@ -33,6 +33,11 @@ class AddModifyCategoryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
+    override fun onCategorySaved() {
+        setResult(CATEGORY_SAVE_RESULT_OK)
+        finish()
+    }
+
     private fun subscribeToastMessage(viewModel: AddModifyCategoryViewModel) {
         viewModel.toastMessage.observe(this, Observer { stringId ->
             Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
@@ -42,13 +47,16 @@ class AddModifyCategoryActivity : AppCompatActivity() {
     private fun subscribeSaveSuccess(viewModel: AddModifyCategoryViewModel) {
         viewModel.isSuccess.observe(this, Observer { isSuccess ->
             if (isSuccess) {
-                setResult(Activity.RESULT_OK)
-                finish()
+                this@AddModifyCategoryActivity.onCategorySaved()
             }
         })
     }
 
     private fun getTossedCategoryId(): String? {
         return intent.getStringExtra("categoryId")
+    }
+
+    companion object {
+        const val REQUEST_CODE = 1000
     }
 }

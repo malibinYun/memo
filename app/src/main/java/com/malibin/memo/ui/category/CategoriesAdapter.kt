@@ -18,6 +18,8 @@ class CategoriesAdapter : ListAdapter<Category, CategoriesAdapter.ViewHolder>(Di
     private var itemClickListener: ((categoryId: String) -> Unit)? = null
     private var itemDeleteClickListener: ((categoryId: String) -> Unit)? = null
 
+    private lateinit var showItems: MutableList<Category>
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemCategoryBinding.inflate(
@@ -29,6 +31,11 @@ class CategoriesAdapter : ListAdapter<Category, CategoriesAdapter.ViewHolder>(Di
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
         holder.bind(category)
+    }
+
+    override fun submitList(list: MutableList<Category>?) {
+        super.submitList(list)
+        showItems = list ?: mutableListOf()
     }
 
     fun setItemClickListener(listener: (categoryId: String) -> Unit) {
@@ -45,6 +52,9 @@ class CategoriesAdapter : ListAdapter<Category, CategoriesAdapter.ViewHolder>(Di
 
     private fun createItemDeleteClickListener(categoryId: String) = View.OnClickListener {
         itemDeleteClickListener?.invoke(categoryId)
+        val position = showItems.indexOfFirst { it.id == categoryId }
+        showItems.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     inner class ViewHolder(
