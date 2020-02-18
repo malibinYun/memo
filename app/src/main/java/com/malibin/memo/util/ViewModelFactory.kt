@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.MemoRepository
-import com.malibin.memo.ui.category.AddModifyCategoryViewModel
+import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(

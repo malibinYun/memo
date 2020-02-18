@@ -7,4 +7,8 @@
     <string name="category_modified">카테고리가 수정되었습니다.</string>
     <string name="category_added">카테고리가 추가되었습니다.</string>
     <string name="save">저장하기</string>
+    <string name="important_memo">중요 메모</string>
+    <string name="all_memo">모든 메모</string>
+    <string name="add_category">카테고리 추가하기</string>
+    <string name="edit_category">카테고리 편집하기</string>
 </resources>

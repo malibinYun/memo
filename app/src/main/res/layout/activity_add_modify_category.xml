@@ -11,14 +11,14 @@
 
         <variable
             name="addModifyCategoryVM"
-            type="com.malibin.memo.ui.category.AddModifyCategoryViewModel" />
+            type="com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        tools:context=".ui.category.AddModifyCategoryActivity">
+        tools:context=".ui.category.addmodify.AddModifyCategoryActivity">
 
         <TextView
             android:id="@+id/textView2"

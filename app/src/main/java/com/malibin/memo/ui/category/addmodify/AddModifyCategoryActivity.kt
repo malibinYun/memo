@@ -1,4 +1,4 @@
-package com.malibin.memo.ui.category
+package com.malibin.memo.ui.category.addmodify
 
 import android.app.Activity
 import android.os.Bundle

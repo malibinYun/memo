@@ -15,6 +15,7 @@
     <color name="categoryGray">#B9C6Cf</color>
     <color name="categoryBlack">#000000</color>
 
-    <color name="f0Gray">#F0F0F0</color>
+    <color name="grayF0">#F0F0F0</color>
+    <color name="gray70">#707070</color>
     <color name="winterSky">#6998F2</color>
 </resources>
