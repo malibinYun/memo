@@ -3,10 +3,12 @@ package com.malibin.memo.ui.category
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.malibin.memo.R
 import com.malibin.memo.databinding.ItemCategoryBinding
 import com.malibin.memo.db.entity.Category
 
@@ -51,6 +53,11 @@ class CategoriesAdapter : ListAdapter<Category, CategoriesAdapter.ViewHolder>(Di
     }
 
     private fun createItemDeleteClickListener(categoryId: String) = View.OnClickListener {
+        if (categoryId == "unique") {
+            Toast.makeText(it.context, R.string.cannot_delete_basic_category, Toast.LENGTH_SHORT)
+                .show()
+            return@OnClickListener
+        }
         itemDeleteClickListener?.invoke(categoryId)
         val position = showItems.indexOfFirst { it.id == categoryId }
         showItems.removeAt(position)
