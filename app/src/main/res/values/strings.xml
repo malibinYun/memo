@@ -11,4 +11,6 @@
     <string name="all_memo">모든 메모</string>
     <string name="add_category">카테고리 추가하기</string>
     <string name="edit_category">카테고리 편집하기</string>
+    <string name="edit_category_canceled">카테고리 편집이 취소되었습니다.</string>
+    <string name="edit_category_is_finished">카테고리 편집이 완료되었습니다.</string>
 </resources>

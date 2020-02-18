@@ -1,32 +1,18 @@
 package com.malibin.memo.ui.category.addmodify
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.malibin.memo.R
 import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.entity.Category
-import java.lang.RuntimeException
+import com.malibin.memo.util.BaseViewModel
 
 class AddModifyCategoryViewModel(
     private val categoryRepository: CategoryRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     val name = MutableLiveData<String>()
 
     val selectedColor = MutableLiveData<Category.Color>().apply { value = Category.Color.GRAY }
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean>
-        get() = _isLoading
-
-    private val _toastMessage = MutableLiveData<Int>()
-    val toastMessage: LiveData<Int>
-        get() = _toastMessage
-
-    private val _isSuccess = MutableLiveData<Boolean>()
-    val isSuccess: LiveData<Boolean>
-        get() = _isSuccess
 
     private var categoryId: String? = null
 
