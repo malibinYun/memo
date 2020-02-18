@@ -6,6 +6,7 @@ import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.ui.category.CategoriesViewModel
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
+import com.malibin.memo.ui.category.select.CategorySelectViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(
@@ -17,6 +18,7 @@ class ViewModelFactory(
         return when (modelClass) {
 
             CategoriesViewModel::class.java,
+            CategorySelectViewModel::class.java,
             AddModifyCategoryViewModel::class.java ->
                 modelClass.getConstructor(CATEGORY_REPO).newInstance(categoryRepository)
 
