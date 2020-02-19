@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="memoEditVM"
+            type="com.malibin.memo.ui.memo.MemoEditViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,11 +27,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/btn_complete2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:onClick="@{(view) -> memoEditVM.saveMemo()}"
+                android:paddingLeft="16dp"
+                android:paddingRight="10dp"
+                android:text="@string/save"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:onClick="@{(view) -> memoEditVM.cancelEditMemo()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -75,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
+                    app:bind_selected="@={memoEditVM.isImportant()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/selector_btn_star" />
@@ -86,6 +109,7 @@
                     android:layout_marginLeft="16dp"
                     android:background="@drawable/circle_shape"
                     android:foregroundGravity="center"
+                    app:bind_category_color="@{memoEditVM.category.colorCode}"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_category_name"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -103,6 +127,7 @@
                     android:layout_marginRight="16dp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="@{memoEditVM.category.name}"
                     app:layout_constraintLeft_toRightOf="@id/iv_category_color"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_memo_alarm_date" />
@@ -117,6 +142,7 @@
                     android:ems="10"
                     android:hint="@string/title"
                     android:inputType="textPersonName"
+                    android:text="@={memoEditVM.title}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_category_name" />
@@ -127,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    app:bind_date="@{memoEditVM.createdDate}"
                     app:layout_constraintStart_toStartOf="@+id/et_memo_title"
                     app:layout_constraintTop_toBottomOf="@+id/et_memo_title" />
 
@@ -149,6 +176,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/round_rectagle_translucent_black_8dp"
+                    android:visibility="@{memoEditVM.shownImages.empty ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="@+id/vp_memo_images"
                     app:layout_constraintTop_toTopOf="@+id/vp_memo_images">
 
@@ -184,6 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="12dp"
+                        android:text="@{memoEditVM.shownImages.size()}"
                         android:textColor="@android:color/white"
                         app:layout_constraintBottom_toBottomOf="@+id/textView7"
                         app:layout_constraintLeft_toRightOf="@id/textView7"
@@ -202,6 +231,7 @@
                     android:hint="@string/input_content"
                     android:inputType="textMultiLine"
                     android:minHeight="140dp"
+                    android:text="@={memoEditVM.content}"
                     app:layout_constraintEnd_toEndOf="@+id/vp_memo_images"
                     app:layout_constraintStart_toStartOf="@+id/vp_memo_images"
                     app:layout_constraintTop_toBottomOf="@+id/vp_memo_images" />
@@ -230,7 +260,8 @@
                 android:id="@+id/btn_delete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:onClick="@{(view) -> memoEditVM.deleteMemo()}">
 
                 <ImageView
                     android:id="@+id/imageView4"
@@ -247,7 +278,8 @@
                 android:id="@+id/btn_category"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:onClick="@{(view) -> memoEditVM.deploySelectCategory()}">
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -264,7 +296,8 @@
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:onClick="@{(view) -> memoEditVM.saveMemo()}">
 
                 <ImageView
                     android:id="@+id/imageView6"

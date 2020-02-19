@@ -38,6 +38,10 @@ class MemoEditViewModel(
     val editCancelEvent: LiveData<Boolean>
         get() = _editCancelEvent
 
+    private val _deploySelectCategoryEvent = MutableLiveData<Boolean>()
+    val deploySelectCategoryEvent: LiveData<Boolean>
+        get() = _deploySelectCategoryEvent
+
     private var memoId: String? = null
 
     private var isNewMemo: Boolean = true
@@ -73,6 +77,10 @@ class MemoEditViewModel(
         loadCategory(memo.categoryId)
     }
 
+    fun deploySelectCategory() {
+        _deploySelectCategoryEvent.value = true
+    }
+
     fun updateCategory(categoryId: String) {
         loadCategory(categoryId)
     }
@@ -104,6 +112,10 @@ class MemoEditViewModel(
 
     fun cancelEditMemo() {
         _editCancelEvent.value = true
+    }
+
+    fun deleteMemo() {
+
     }
 
     fun saveMemo() {
