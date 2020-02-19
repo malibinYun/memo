@@ -54,6 +54,7 @@ data class Memo(
     }
 
     fun addImages(images: List<Image>) {
+        if (images.isEmpty()) return
         if (this._images.isEmpty()) thumbnailByteCode = images[0].byteCode
         _images.addAll(images)
         imageCount += images.size

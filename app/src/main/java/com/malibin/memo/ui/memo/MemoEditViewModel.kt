@@ -1,5 +1,6 @@
 package com.malibin.memo.ui.memo
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.malibin.memo.R
@@ -8,8 +9,9 @@ import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
+import com.malibin.memo.ui.category.select.CategorySelectActivity
 import com.malibin.memo.util.BaseViewModel
-import java.lang.RuntimeException
+import com.malibin.memo.util.MEMO_CATEGORY_SELECTED
 
 class MemoEditViewModel(
     private val memoRepository: MemoRepository,
@@ -41,6 +43,10 @@ class MemoEditViewModel(
     private val _deploySelectCategoryEvent = MutableLiveData<Boolean>()
     val deploySelectCategoryEvent: LiveData<Boolean>
         get() = _deploySelectCategoryEvent
+
+    private val _isDeleted = MutableLiveData<Boolean>()
+    val isDeleted: LiveData<Boolean>
+        get() = _isDeleted
 
     private var memoId: String? = null
 
@@ -77,12 +83,17 @@ class MemoEditViewModel(
         loadCategory(memo.categoryId)
     }
 
-    fun deploySelectCategory() {
-        _deploySelectCategoryEvent.value = true
+    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CategorySelectActivity.REQUEST_CODE) {
+            if (resultCode == MEMO_CATEGORY_SELECTED) {
+                val categoryId = data?.getStringExtra("categoryId") ?: Category.BASIC_ID
+                loadCategory(categoryId)
+            }
+        }
     }
 
-    fun updateCategory(categoryId: String) {
-        loadCategory(categoryId)
+    fun deploySelectCategory() {
+        _deploySelectCategoryEvent.value = true
     }
 
     private fun loadCategory(categoryId: String) {
@@ -115,7 +126,13 @@ class MemoEditViewModel(
     }
 
     fun deleteMemo() {
-
+        if (isNewMemo) {
+            _editCancelEvent.value = true
+            return
+        }
+        val currentMemoId = memoId ?: throw RuntimeException("memo isn't new but don't have Id")
+        memoRepository.deleteMemoById(currentMemoId)
+        _isDeleted.value = true
     }
 
     fun saveMemo() {
@@ -141,12 +158,14 @@ class MemoEditViewModel(
     private fun addMemo() {
         val memo = assembleMemo()
         memoRepository.saveMemo(memo)
+        _isSuccess.value = true
     }
 
     private fun modifyMemo() {
         val memo = assembleMemo()
         val imageToDelete = getImagesToDelete()
         memoRepository.modifyMemo(memo, imageToDelete)
+        _isSuccess.value = true
     }
 
     private fun assembleMemo(): Memo {

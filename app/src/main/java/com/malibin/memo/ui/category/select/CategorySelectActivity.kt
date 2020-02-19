@@ -1,8 +1,8 @@
 package com.malibin.memo.ui.category.select
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -45,7 +45,7 @@ class CategorySelectActivity : AppCompatActivity(), CategorySelectNavigator {
 
     override fun onItemSelected(categoryId: String) {
         intent.putExtra("categoryId", categoryId)
-        setResult(MEMO_CATEGORY_SELECTED)
+        setResult(MEMO_CATEGORY_SELECTED, intent)
         finish()
     }
 
@@ -81,5 +81,9 @@ class CategorySelectActivity : AppCompatActivity(), CategorySelectNavigator {
         viewModel.newItemEvent.observe(this, Observer {
             this@CategorySelectActivity.addNewCategory()
         })
+    }
+
+    companion object {
+        const val REQUEST_CODE = 1001
     }
 }
