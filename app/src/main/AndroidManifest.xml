@@ -11,14 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.memo.MemosActivity">
+
+        </activity>
+        <activity android:name=".ui.memo.edit.MemoEditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ui.memo.edit.MemoEditActivity">
-
         </activity>
         <activity android:name=".ui.category.select.CategorySelectActivity"></activity>
         <activity android:name=".ui.category.CategoriesActivity" />
