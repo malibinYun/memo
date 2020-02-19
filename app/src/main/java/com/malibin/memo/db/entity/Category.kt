@@ -33,4 +33,8 @@ data class Category(
         GRAY(R.color.categoryGray),
         BLACK(R.color.categoryBlack);
     }
+
+    companion object {
+        const val BASIC_ID = "unique"
+    }
 }

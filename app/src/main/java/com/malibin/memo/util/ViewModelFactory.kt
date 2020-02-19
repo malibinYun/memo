@@ -7,6 +7,7 @@ import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.ui.category.CategoriesViewModel
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
 import com.malibin.memo.ui.category.select.CategorySelectViewModel
+import com.malibin.memo.ui.memo.MemoEditViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(
@@ -21,6 +22,10 @@ class ViewModelFactory(
             CategorySelectViewModel::class.java,
             AddModifyCategoryViewModel::class.java ->
                 modelClass.getConstructor(CATEGORY_REPO).newInstance(categoryRepository)
+
+            MemoEditViewModel::class.java ->
+                modelClass.getConstructor(MEMO_REPO, CATEGORY_REPO)
+                    .newInstance(memoRepository, categoryRepository)
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         } as T
