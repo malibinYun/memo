@@ -1,4 +1,4 @@
-package com.malibin.memo.ui.memo
+package com.malibin.memo.ui.memo.edit
 
 import android.content.Intent
 import androidx.lifecycle.LiveData

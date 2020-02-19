@@ -9,7 +9,7 @@
 
         <variable
             name="memoEditVM"
-            type="com.malibin.memo.ui.memo.MemoEditViewModel" />
+            type="com.malibin.memo.ui.memo.edit.MemoEditViewModel" />
 
     </data>
 
@@ -67,7 +67,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".ui.memo.MemoEditActivity"
+                tools:context=".ui.memo.edit.MemoEditActivity"
                 tools:layout_editor_absoluteY="300dp">
 
                 <TextView

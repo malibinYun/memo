@@ -7,7 +7,7 @@ import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.ui.category.CategoriesViewModel
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
 import com.malibin.memo.ui.category.select.CategorySelectViewModel
-import com.malibin.memo.ui.memo.MemoEditViewModel
+import com.malibin.memo.ui.memo.edit.MemoEditViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(

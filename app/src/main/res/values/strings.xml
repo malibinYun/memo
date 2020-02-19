@@ -19,4 +19,5 @@
     <string name="input_content">내용을 입력해주세요.</string>
     <string name="input_title">제목을 입력해주세요.</string>
     <string name="edit_memo_canceled">메모 편집이 취소되었습니다.</string>
+    <string name="edit">Edit</string>
 </resources>

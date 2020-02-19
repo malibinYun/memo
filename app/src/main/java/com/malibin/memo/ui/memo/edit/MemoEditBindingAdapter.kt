@@ -1,4 +1,4 @@
-package com.malibin.memo.ui.memo
+package com.malibin.memo.ui.memo.edit
 
 import android.view.View
 import android.widget.TextView
