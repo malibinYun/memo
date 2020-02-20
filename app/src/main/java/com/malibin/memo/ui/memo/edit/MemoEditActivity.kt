@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
+import com.malibin.memo.db.entity.Image
 import com.malibin.memo.ui.category.select.CategorySelectActivity
 import com.malibin.memo.util.MEMO_DELETED
 import com.malibin.memo.util.MEMO_EDIT_CANCELED
@@ -28,8 +28,10 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel = ViewModelProvider(this, viewModelFactory)[MemoEditViewModel::class.java]
         memoEditViewModel.start(tossedMemoId)
 
-        val pagerAdapter = MemoImagePagerAdapter(this)
-
+        val pagerAdapter = MemoImagePagerAdapter(this).apply {
+            setImageClickListener { onImageClick(it) }
+            setDeleteClickListener { onImageDeleteClick(it) }
+        }
         val binding: ActivityMemoEditBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_memo_edit)
 
@@ -73,6 +75,14 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
 
     private fun getTossedMemoId(): String? {
         return intent.getStringExtra("memoId")
+    }
+
+    private fun onImageDeleteClick(image: Image) {
+        memoEditViewModel.deleteImage(image)
+    }
+
+    private fun onImageClick(image: Image) {
+
     }
 
     private fun subscribeViewModel(adapter: MemoImagePagerAdapter) {

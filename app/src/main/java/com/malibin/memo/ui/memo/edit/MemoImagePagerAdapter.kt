@@ -17,23 +17,22 @@ import com.malibin.memo.util.toBitmap
 class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
 
     private val imageList = ArrayList<Image>()
-
     private var layoutInflater: LayoutInflater =
         context.getSystemService() ?: throw RuntimeException("layout inflater is null")
 
+    private var imageClickListener: ((image: Image) -> Unit)? = null
+    private var deleteClickListener: ((image: Image) -> Unit)? = null
+
+    override fun getCount(): Int = imageList.size + ADD_IMAGE_VIEW_COUNT
+
+    override fun getItemPosition(`object`: Any): Int = POSITION_NONE
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object` as ConstraintLayout
     }
 
-    override fun getCount(): Int = imageList.size + ADD_IMAGE_VIEW_COUNT
-
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
-    }
-
-    override fun getItemPosition(`object`: Any): Int {
-        return POSITION_NONE
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -51,8 +50,11 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
     }
 
     private fun createItemView(container: ViewGroup, position: Int): View {
-        val itemView = WindowImageBinding.inflate(layoutInflater)
         val image = imageList[position]
+        val itemView = WindowImageBinding.inflate(layoutInflater).apply {
+            imageClickListener = createImageClickListener(image)
+            deleteClickListener = createDeleteClickListener(image)
+        }
         Glide.with(context)
             .load(image.byteCode.toBitmap())
             .into(itemView.image)
@@ -63,6 +65,23 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
     fun submitList(imageList: List<Image>) {
         this.imageList.clear()
         this.imageList.addAll(imageList)
+        notifyDataSetChanged()
+    }
+
+    fun setImageClickListener(listener: (image: Image) -> Unit) {
+        this.imageClickListener = listener
+    }
+
+    private fun createImageClickListener(image: Image) = View.OnClickListener {
+        this.imageClickListener?.invoke(image)
+    }
+
+    fun setDeleteClickListener(listener: (image: Image) -> Unit) {
+        this.deleteClickListener = listener
+    }
+
+    private fun createDeleteClickListener(image: Image) = View.OnClickListener {
+        this.deleteClickListener?.invoke(image)
         notifyDataSetChanged()
     }
 
