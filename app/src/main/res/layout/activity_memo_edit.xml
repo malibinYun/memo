@@ -166,6 +166,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
+                    app:bind_page_position="@={memoEditVM.shownImagePosition}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_memo_date">
@@ -178,7 +179,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/round_rectagle_translucent_black_8dp"
-                    android:visibility="@{memoEditVM.shownImages.empty ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{memoEditVM.shownImagePosition > memoEditVM.shownImages.size() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="@+id/vp_memo_images"
                     app:layout_constraintTop_toTopOf="@+id/vp_memo_images">
 
@@ -189,6 +190,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
+                        android:text="@{String.valueOf(memoEditVM.shownImagePosition)}"
                         android:textColor="@android:color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_chainStyle="packed"

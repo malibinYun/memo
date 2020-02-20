@@ -26,6 +26,8 @@ class MemoEditViewModel(
 
     val category = MutableLiveData<Category>()
 
+    val shownImagePosition = MutableLiveData<Int>().apply { value = 1 }
+
     private val originalImages = mutableListOf<Image>()
 
     private val _shownImages = MutableLiveData<List<Image>>()

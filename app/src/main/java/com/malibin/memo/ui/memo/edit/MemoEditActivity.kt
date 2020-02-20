@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
 import com.malibin.memo.ui.category.select.CategorySelectActivity
@@ -27,19 +28,17 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel = ViewModelProvider(this, viewModelFactory)[MemoEditViewModel::class.java]
         memoEditViewModel.start(tossedMemoId)
 
+        val pagerAdapter = MemoImagePagerAdapter(this)
+
         val binding: ActivityMemoEditBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_memo_edit)
 
         binding.apply {
             memoEditVM = memoEditViewModel
             lifecycleOwner = this@MemoEditActivity
+            vpMemoImages.adapter = pagerAdapter
         }
-
-        subscribeToastMessage(memoEditViewModel)
-        subscribeEditCancelEvent(memoEditViewModel)
-        subscribeDeploySelectCategoryEvent(memoEditViewModel)
-        subscribeSaveSuccess(memoEditViewModel)
-        subscribeDeletedMemo(memoEditViewModel)
+        subscribeViewModel(pagerAdapter)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -76,33 +75,48 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         return intent.getStringExtra("memoId")
     }
 
-    private fun subscribeEditCancelEvent(viewModel: MemoEditViewModel) {
-        viewModel.editCancelEvent.observe(this, Observer {
+    private fun subscribeViewModel(adapter: MemoImagePagerAdapter) {
+        subscribeToastMessage()
+        subscribeEditCancelEvent()
+        subscribeDeploySelectCategoryEvent()
+        subscribeSaveSuccess()
+        subscribeDeletedMemo()
+        subscribeImages(adapter)
+    }
+
+    private fun subscribeEditCancelEvent() {
+        memoEditViewModel.editCancelEvent.observe(this, Observer {
             this@MemoEditActivity.onEditMemoCanceled()
         })
     }
 
-    private fun subscribeDeploySelectCategoryEvent(viewModel: MemoEditViewModel) {
-        viewModel.deploySelectCategoryEvent.observe(this, Observer {
+    private fun subscribeDeploySelectCategoryEvent() {
+        memoEditViewModel.deploySelectCategoryEvent.observe(this, Observer {
             this@MemoEditActivity.selectCategory()
         })
     }
 
-    private fun subscribeToastMessage(viewModel: MemoEditViewModel) {
-        viewModel.toastMessage.observe(this, Observer { stringId ->
+    private fun subscribeToastMessage() {
+        memoEditViewModel.toastMessage.observe(this, Observer { stringId ->
             Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
         })
     }
 
-    private fun subscribeSaveSuccess(viewModel: MemoEditViewModel) {
-        viewModel.isSuccess.observe(this, Observer {
+    private fun subscribeSaveSuccess() {
+        memoEditViewModel.isSuccess.observe(this, Observer {
             this@MemoEditActivity.onMemoSaved()
         })
     }
 
-    private fun subscribeDeletedMemo(viewModel: MemoEditViewModel) {
-        viewModel.isDeleted.observe(this, Observer {
+    private fun subscribeDeletedMemo() {
+        memoEditViewModel.isDeleted.observe(this, Observer {
             this@MemoEditActivity.onMemoDeleted()
+        })
+    }
+
+    private fun subscribeImages(adapter: MemoImagePagerAdapter) {
+        memoEditViewModel.shownImages.observe(this, Observer {
+            adapter.submitList(it)
         })
     }
 }

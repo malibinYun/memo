@@ -21,6 +21,7 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
     private var layoutInflater: LayoutInflater =
         context.getSystemService() ?: throw RuntimeException("layout inflater is null")
 
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object` as ConstraintLayout
     }
