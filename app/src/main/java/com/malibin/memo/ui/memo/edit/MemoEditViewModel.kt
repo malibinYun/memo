@@ -44,10 +44,6 @@ class MemoEditViewModel(
     val editCancelEvent: LiveData<Boolean>
         get() = _editCancelEvent
 
-    private val _deploySelectCategoryEvent = MutableLiveData<Boolean>()
-    val deploySelectCategoryEvent: LiveData<Boolean>
-        get() = _deploySelectCategoryEvent
-
     private val _deployEvent = MutableLiveData<DeployEvent>()
     val deployEvent: LiveData<DeployEvent>
         get() = _deployEvent
@@ -117,7 +113,7 @@ class MemoEditViewModel(
     }
 
     fun deploySelectCategory() {
-        _deploySelectCategoryEvent.value = true
+        _deployEvent.value = DeployEvent(DeployEvent.SELECT_CATEGORY_ACT)
     }
 
     fun deployGallery() {

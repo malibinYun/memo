@@ -134,7 +134,6 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
     private fun subscribeViewModel(adapter: MemoImagePagerAdapter) {
         subscribeToastMessage()
         subscribeEditCancelEvent()
-        subscribeDeploySelectCategoryEvent()
         subscribeDeployEvent()
         subscribeSaveSuccess()
         subscribeDeletedMemo()
@@ -144,12 +143,6 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
     private fun subscribeEditCancelEvent() {
         memoEditViewModel.editCancelEvent.observe(this, Observer {
             this@MemoEditActivity.onEditMemoCanceled()
-        })
-    }
-
-    private fun subscribeDeploySelectCategoryEvent() {
-        memoEditViewModel.deploySelectCategoryEvent.observe(this, Observer {
-            this@MemoEditActivity.selectCategory()
         })
     }
 
@@ -181,6 +174,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel.deployEvent.observe(this, Observer {
             when (it.deployCode) {
                 DeployEvent.GALLERY -> deployGalleryOrRequestPermission()
+                DeployEvent.SELECT_CATEGORY_ACT -> selectCategory()
             }
         })
     }
