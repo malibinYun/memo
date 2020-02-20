@@ -207,9 +207,11 @@ class MemoLocalDataSourceTest : KoinTest {
     ) {
         createBitmap(imageResource = imageResource) {
             val newMemo = Memo(title = title, content = content, categoryId = categoryId)
-            val image = Image(ofMemoId = newMemo.id, byteCode = it.toByteArray())
-            newMemo.apply { addImage(image) }
-            callback(newMemo)
+            it.toByteArray { byteCode ->
+                val image = Image(ofMemoId = newMemo.id, byteCode = byteCode)
+                newMemo.apply { addImage(image) }
+                callback(newMemo)
+            }
         }
     }
 

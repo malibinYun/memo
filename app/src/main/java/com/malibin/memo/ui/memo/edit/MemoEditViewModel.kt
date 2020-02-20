@@ -1,5 +1,6 @@
 package com.malibin.memo.ui.memo.edit
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.lifecycle.LiveData
@@ -11,9 +12,14 @@ import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.memo.edit.MemoEditActivity.Companion.REQUEST_CODE_PICK_IMAGES
+import com.malibin.memo.ui.util.ImageLoader
 import com.malibin.memo.util.BaseViewModel
 import com.malibin.memo.util.DeployEvent
 import com.malibin.memo.util.MEMO_CATEGORY_SELECTED
+import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MemoEditViewModel(
     private val memoRepository: MemoRepository,
@@ -36,6 +42,10 @@ class MemoEditViewModel(
     val shownImages: LiveData<List<Image>>
         get() = _shownImages
 
+    private val _isImageLoading = MutableLiveData<Boolean>()
+    val isImageLoading: LiveData<Boolean>
+        get() = _isImageLoading
+
     private val _createdDate = MutableLiveData<Long>().apply { value = System.currentTimeMillis() }
     val createdDate: LiveData<Long>
         get() = _createdDate
@@ -56,18 +66,24 @@ class MemoEditViewModel(
 
     private var isNewMemo: Boolean = true
 
+    private lateinit var imageLoader: ImageLoader
+    private var asyncCount = 0
+
     fun start(memoId: String?) {
         _isLoading.value = true
         this.memoId = memoId
 
         if (memoId == null) {
             isNewMemo = true
+            this.memoId = UUID.randomUUID().toString()
+            imageLoader = ImageLoader(this.memoId!!)
             loadCategory(Category.BASIC_ID)
             _isLoading.value = false
             return
         }
         isNewMemo = false
         loadMemo(memoId)
+        imageLoader = ImageLoader(memoId)
     }
 
     private fun loadMemo(memoId: String) {
@@ -92,6 +108,12 @@ class MemoEditViewModel(
             if (resultCode == MEMO_CATEGORY_SELECTED) {
                 val categoryId = data?.getStringExtra("categoryId") ?: Category.BASIC_ID
                 loadCategory(categoryId)
+            }
+        }
+        if (requestCode == REQUEST_CODE_PICK_IMAGES) {
+            if (resultCode == Activity.RESULT_OK) {
+                data as Intent
+                loadImageFromIntent(data)
             }
         }
     }
@@ -127,15 +149,41 @@ class MemoEditViewModel(
         }
     }
 
-    fun addImage(image: Image) {
-        val shownImages = _shownImages.value ?: listOf()
-        val newImages = ArrayList(shownImages).apply { add(image) }
-        _shownImages.value = newImages
+    private fun loadImageFromIntent(intent: Intent) {
+        _isImageLoading.value = true
+        val isOneImagePicked = intent.data != null
+        if (isOneImagePicked) {
+            loadOneImage(intent)
+            return
+        }
+        loadImages(intent)
     }
 
-    fun addImages(images: List<Image>) {
+    private fun loadOneImage(intent: Intent) {
+        val imageUri = intent.data ?: throw RuntimeException("intent data is null")
+        asyncCount = 1
+        imageLoader.getImage(imageUri) { finishLoadImage(it) }
+    }
+
+    private fun loadImages(intent: Intent) {
+        val clipData = intent.clipData ?: throw RuntimeException("intent clip data is null")
+        val uriCount = clipData.itemCount
+        asyncCount = uriCount
+        for (i in 0 until uriCount) {
+            val uri = clipData.getItemAt(i).uri
+            imageLoader.getImage(uri) { finishLoadImage(it) }
+        }
+    }
+
+    private fun finishLoadImage(image: Image) {
+        asyncCount--
+        addImage(image)
+        if (asyncCount == 0) _isImageLoading.value = false
+    }
+
+    private fun addImage(image: Image) {
         val shownImages = _shownImages.value ?: listOf()
-        val newImages = ArrayList(shownImages).apply { addAll(images) }
+        val newImages = ArrayList(shownImages).apply { add(image) }
         _shownImages.value = newImages
     }
 
@@ -194,13 +242,9 @@ class MemoEditViewModel(
 
     private fun assembleMemo(): Memo {
         val memo: Memo
-        val currentId = memoId
+        val currentId = memoId ?: throw RuntimeException("Cannot get memo id")
         val createdDate = _createdDate.value ?: throw RuntimeException("Cannot get created time")
-        if (currentId == null) {
-            memo = Memo(createdDate = createdDate)
-            injectFieldsInMemo(memo)
-            return memo
-        }
+
         memo = Memo(id = currentId, createdDate = createdDate)
         injectFieldsInMemo(memo)
         return memo

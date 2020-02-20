@@ -224,6 +224,16 @@
                         app:layout_constraintTop_toTopOf="@+id/textView7" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <include
+                    layout="@layout/window_loading"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="@{memoEditVM.isImageLoading() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/vp_memo_images"
+                    app:layout_constraintEnd_toEndOf="@+id/vp_memo_images"
+                    app:layout_constraintStart_toStartOf="@+id/vp_memo_images"
+                    app:layout_constraintTop_toTopOf="@+id/vp_memo_images" />
+
                 <EditText
                     android:id="@+id/et_memo_contents"
                     android:layout_width="0dp"

@@ -1,9 +1,11 @@
 package com.malibin.memo.ui.memo.edit
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.getSystemService
 import androidx.viewpager.widget.PagerAdapter
@@ -55,11 +57,17 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
             imageClickListener = createImageClickListener(image)
             deleteClickListener = createDeleteClickListener(image)
         }
-        Glide.with(context)
-            .load(image.byteCode.toBitmap())
-            .into(itemView.image)
+        loadImage(image, itemView.image)
         container.addView(itemView.root)
         return itemView.root
+    }
+
+    private fun loadImage(image: Image, imageView: ImageView) {
+        image.byteCode.toBitmap {
+            Glide.with(context)
+                .load(it)
+                .into(imageView)
+        }
     }
 
     fun submitList(imageList: List<Image>) {
