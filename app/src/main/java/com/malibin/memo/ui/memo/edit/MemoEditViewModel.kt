@@ -1,6 +1,7 @@
 package com.malibin.memo.ui.memo.edit
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.malibin.memo.R
@@ -11,6 +12,7 @@ import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.select.CategorySelectActivity
 import com.malibin.memo.util.BaseViewModel
+import com.malibin.memo.util.DeployEvent
 import com.malibin.memo.util.MEMO_CATEGORY_SELECTED
 
 class MemoEditViewModel(
@@ -45,6 +47,10 @@ class MemoEditViewModel(
     private val _deploySelectCategoryEvent = MutableLiveData<Boolean>()
     val deploySelectCategoryEvent: LiveData<Boolean>
         get() = _deploySelectCategoryEvent
+
+    private val _deployEvent = MutableLiveData<DeployEvent>()
+    val deployEvent: LiveData<DeployEvent>
+        get() = _deployEvent
 
     private val _isDeleted = MutableLiveData<Boolean>()
     val isDeleted: LiveData<Boolean>
@@ -94,8 +100,28 @@ class MemoEditViewModel(
         }
     }
 
+    fun handleRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == MemoEditActivity.REQUEST_CODE_GALLERY_PERMISSION) {
+            val isPermissionGranted =
+                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            if (isPermissionGranted) {
+                _deployEvent.value = DeployEvent(DeployEvent.GALLERY)
+                return
+            }
+            _toastMessage.value = R.string.gallery_permission_rejected
+        }
+    }
+
     fun deploySelectCategory() {
         _deploySelectCategoryEvent.value = true
+    }
+
+    fun deployGallery() {
+        _deployEvent.value = DeployEvent(DeployEvent.GALLERY)
     }
 
     private fun loadCategory(categoryId: String) {

@@ -1,9 +1,11 @@
 package com.malibin.memo.ui.memo.edit
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,8 @@ import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.memo.dialog.MemoImageDialog
+import com.malibin.memo.util.DeployEvent
 import com.malibin.memo.util.MEMO_DELETED
 import com.malibin.memo.util.MEMO_EDIT_CANCELED
 import com.malibin.memo.util.MEMO_SAVED
@@ -29,6 +33,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel.start(tossedMemoId)
 
         val pagerAdapter = MemoImagePagerAdapter(this).apply {
+            setAddImageClickListener { deployMemoImageDialog() }
             setImageClickListener { onImageClick(it) }
             setDeleteClickListener { onImageDeleteClick(it) }
         }
@@ -45,8 +50,16 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         memoEditViewModel.handleActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        memoEditViewModel.handleRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onBackPressed() {
@@ -85,10 +98,44 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
 
     }
 
+    private fun deployMemoImageDialog() {
+        MemoImageDialog(this, memoEditViewModel).show()
+    }
+
+    private fun deployGalleryOrRequestPermission() {
+        val previousPermissionGranted = ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        val isPermissionGranted = previousPermissionGranted == PackageManager.PERMISSION_GRANTED
+        if (isPermissionGranted) {
+            deployGallery()
+            return
+        }
+        requestPermissions(
+            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_CODE_GALLERY_PERMISSION
+        )
+    }
+
+    private fun deployGallery() {
+        val photoPickerIntent = Intent()
+        photoPickerIntent.apply {
+            type = "image/*"
+            action = Intent.ACTION_GET_CONTENT
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        }
+        startActivityForResult(
+            Intent.createChooser(photoPickerIntent, "select picture"),
+            REQUEST_CODE_PICK_IMAGES
+        )
+    }
+
     private fun subscribeViewModel(adapter: MemoImagePagerAdapter) {
         subscribeToastMessage()
         subscribeEditCancelEvent()
         subscribeDeploySelectCategoryEvent()
+        subscribeDeployEvent()
         subscribeSaveSuccess()
         subscribeDeletedMemo()
         subscribeImages(adapter)
@@ -128,5 +175,18 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel.shownImages.observe(this, Observer {
             adapter.submitList(it)
         })
+    }
+
+    private fun subscribeDeployEvent() {
+        memoEditViewModel.deployEvent.observe(this, Observer {
+            when (it.deployCode) {
+                DeployEvent.GALLERY -> deployGalleryOrRequestPermission()
+            }
+        })
+    }
+
+    companion object {
+        const val REQUEST_CODE_GALLERY_PERMISSION = 1002
+        const val REQUEST_CODE_PICK_IMAGES = 1003
     }
 }

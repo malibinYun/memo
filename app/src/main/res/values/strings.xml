@@ -20,4 +20,8 @@
     <string name="input_title">제목을 입력해주세요.</string>
     <string name="edit_memo_canceled">메모 편집이 취소되었습니다.</string>
     <string name="edit">Edit</string>
+    <string name="gallery_permission_rejected">권한을 거부하시면 이미지를 업로드 하실 수 없습니다.</string>
+    <string name="get_from_camera">사진으로 직접 찍기</string>
+    <string name="get_from_gallery">갤러리에서 가져오기</string>
+    <string name="get_from_url">외부 URL로 가져오기</string>
 </resources>

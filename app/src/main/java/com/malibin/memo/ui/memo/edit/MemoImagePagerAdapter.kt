@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.malibin.memo.databinding.WindowAddImageBinding
 import com.malibin.memo.databinding.WindowImageBinding
 import com.malibin.memo.db.entity.Image
-import com.malibin.memo.ui.memo.dialog.MemoImageDialog
 import com.malibin.memo.util.toBitmap
 
 class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
@@ -20,6 +19,7 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
     private var layoutInflater: LayoutInflater =
         context.getSystemService() ?: throw RuntimeException("layout inflater is null")
 
+    private var addImageClickListener: View.OnClickListener? = null
     private var imageClickListener: ((image: Image) -> Unit)? = null
     private var deleteClickListener: ((image: Image) -> Unit)? = null
 
@@ -44,7 +44,7 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
 
     private fun createAddImageView(container: ViewGroup): View {
         val view = WindowAddImageBinding.inflate(layoutInflater)
-        view.setClickListener { MemoImageDialog(context).show() }
+        view.clickListener = addImageClickListener
         container.addView(view.root)
         return view.root
     }
@@ -66,6 +66,10 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
         this.imageList.clear()
         this.imageList.addAll(imageList)
         notifyDataSetChanged()
+    }
+
+    fun setAddImageClickListener(listener: () -> Unit) {
+        this.addImageClickListener = View.OnClickListener { listener.invoke() }
     }
 
     fun setImageClickListener(listener: (image: Image) -> Unit) {
