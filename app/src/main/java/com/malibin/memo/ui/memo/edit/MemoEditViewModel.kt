@@ -15,11 +15,13 @@ import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.externalimage.GetExternalImageActivity
 import com.malibin.memo.ui.memo.edit.MemoEditActivity.Companion.REQUEST_CODE_CAMERA
 import com.malibin.memo.ui.memo.edit.MemoEditActivity.Companion.REQUEST_CODE_PICK_IMAGES
 import com.malibin.memo.ui.util.ImageLoader
 import com.malibin.memo.util.BaseViewModel
 import com.malibin.memo.util.DeployEvent
+import com.malibin.memo.util.GET_EXTERNAL_IMAGE_RESULT
 import com.malibin.memo.util.MEMO_CATEGORY_SELECTED
 import java.util.*
 import kotlin.collections.ArrayList
@@ -126,6 +128,13 @@ class MemoEditViewModel(
                 loadImageFromCamera()
             }
         }
+        if (requestCode == GetExternalImageActivity.REQUEST_CODE) {
+            if (resultCode == GET_EXTERNAL_IMAGE_RESULT) {
+                val imageUrl = data?.getStringExtra("imageUrl")
+                    ?: throw RuntimeException("cannot get string extra")
+                loadImageFromExternalUrl(imageUrl)
+            }
+        }
     }
 
     fun handleRequestPermissionsResult(
@@ -206,6 +215,12 @@ class MemoEditViewModel(
         }
     }
 
+    private fun finishLoadImage(image: Image) {
+        asyncCount--
+        addImage(image)
+        if (asyncCount == 0) _isImageLoading.value = false
+    }
+
     private fun loadImageFromCamera() {
         val uri = externalCameraUri ?: throw RuntimeException("externalCameraUri is null")
         _isImageLoading.value = true
@@ -213,10 +228,10 @@ class MemoEditViewModel(
         imageLoader.getImage(uri) { finishLoadImage(it) }
     }
 
-    private fun finishLoadImage(image: Image) {
-        asyncCount--
-        addImage(image)
-        if (asyncCount == 0) _isImageLoading.value = false
+    private fun loadImageFromExternalUrl(imageUrl: String) {
+        _isImageLoading.value = true
+        asyncCount = 1
+        imageLoader.getImage(imageUrl) { finishLoadImage(it) }
     }
 
     private fun addImage(image: Image) {
