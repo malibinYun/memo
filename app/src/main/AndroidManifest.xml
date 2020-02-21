@@ -17,19 +17,30 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.externalimage.GetExternalImageActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".ui.memo.MemosActivity">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.category.CategoriesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.category.select.CategorySelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.category.addmodify.AddModifyCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.memo.edit.MemoEditActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.memo.MemosActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.memo.edit.MemoEditActivity"></activity>
-        <activity android:name=".ui.category.select.CategorySelectActivity" />
-        <activity android:name=".ui.category.CategoriesActivity" />
-        <activity android:name=".ui.category.addmodify.AddModifyCategoryActivity" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
