@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="memo"
+            type="com.malibin.memo.db.entity.Memo" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/memo_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/memo_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/textBlack"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memo_category" />
+
+        <ImageView
+            android:id="@+id/memo_important"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:visibility="@{memo.important ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/memo_title"
+            app:layout_constraintStart_toEndOf="@+id/memo_date"
+            app:layout_constraintTop_toTopOf="@+id/memo_title"
+            app:srcCompat="@drawable/img_star" />
+
+        <ImageView
+            android:id="@+id/memo_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/memo_important"
+            app:layout_constraintStart_toEndOf="@+id/memo_important"
+            app:layout_constraintTop_toTopOf="@+id/memo_important"
+            app:srcCompat="@drawable/btn_alarm" />
+
+        <TextView
+            android:id="@+id/memo_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/textBlack"
+            android:textSize="18sp"
+            android:text="@{memo.title}"
+            app:layout_constraintBottom_toBottomOf="@+id/memo_date"
+            app:layout_constraintEnd_toStartOf="@+id/memo_delete_check"
+            app:layout_constraintStart_toEndOf="@+id/memo_alarm"
+            app:layout_constraintTop_toBottomOf="@+id/memo_category" />
+
+        <ImageView
+            android:id="@+id/memo_delete_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/memo_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/memo_title"
+            app:srcCompat="@drawable/selector_circle_check" />
+
+        <TextView
+            android:id="@+id/memo_contents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/textBlack"
+            android:text="@{memo.content}"
+            app:layout_constraintEnd_toEndOf="@+id/memo_title"
+            app:layout_constraintStart_toStartOf="@+id/memo_title"
+            app:layout_constraintTop_toBottomOf="@+id/memo_title" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/memo_thumbnail_card"
+            android:layout_width="0dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/memo_contents"
+            app:layout_constraintStart_toStartOf="@+id/memo_contents"
+            app:layout_constraintTop_toBottomOf="@+id/memo_contents">
+
+            <ImageView
+                android:id="@+id/memo_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@android:color/darker_gray" />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
