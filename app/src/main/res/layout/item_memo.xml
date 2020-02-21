@@ -7,9 +7,21 @@
 
         <import type="android.view.View" />
 
+        <import type="java.util.Map" />
+
+        <import type="com.malibin.memo.db.entity.Category" />
+
         <variable
             name="memo"
             type="com.malibin.memo.db.entity.Memo" />
+
+        <variable
+            name="memosVM"
+            type="com.malibin.memo.ui.memo.MemosViewModel" />
+
+        <variable
+            name="categoryMap"
+            type="Map&lt;String, Category&gt;" />
 
     </data>
 
@@ -23,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:text="@{categoryMap[memo.categoryId].name}"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +49,7 @@
             android:layout_marginTop="2dp"
             android:textColor="@color/textBlack"
             android:textSize="18sp"
+            app:bind_memo_date="@{memo.createdDate}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/memo_category" />
 
@@ -81,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:visibility="@{memosVM.isDeleteMode() ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/memo_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/memo_title"
@@ -112,6 +127,7 @@
                 android:id="@+id/memo_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:bind_image="@{memo.thumbnailByteCode}"
                 app:srcCompat="@android:color/darker_gray" />
         </androidx.cardview.widget.CardView>
 
