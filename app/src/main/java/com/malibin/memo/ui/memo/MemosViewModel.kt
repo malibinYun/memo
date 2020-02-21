@@ -1,5 +1,6 @@
 package com.malibin.memo.ui.memo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.malibin.memo.R
@@ -17,13 +18,13 @@ class MemosViewModel(
 
     val isDeleteMode = MutableLiveData<Boolean>().apply { value = false }
 
-    private val _items = MutableLiveData<List<Memo>>()
+    private val _items = MutableLiveData<List<Memo>>().apply { value = emptyList() }
     val items: LiveData<List<Memo>>
         get() = _items
 
     private val itemIdsToDelete = mutableListOf<String>()
 
-    private val categoryMap = HashMap<String, Category>()
+    val categoryMap = HashMap<String, Category>()
 
     init {
         loadCategories()
@@ -33,6 +34,7 @@ class MemosViewModel(
     private fun loadMemos() {
         _isLoading.value = true
         memoRepository.getMemosNoImages {
+            Log.d("MalibinD", it.toString())
             _items.value = it
             _isLoading.value = false
         }
@@ -40,6 +42,8 @@ class MemosViewModel(
 
     private fun loadCategories() {
         categoryRepository.getAllCategories {
+            Log.d("MalibinD", it.toString())
+
             for (category in it) {
                 categoryMap[category.id] = category
             }

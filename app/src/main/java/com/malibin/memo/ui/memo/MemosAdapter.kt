@@ -2,6 +2,7 @@ package com.malibin.memo.ui.memo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,8 @@ import com.malibin.memo.databinding.ItemMemoBinding
 import com.malibin.memo.db.entity.Memo
 
 class MemosAdapter(
-    private val memosViewModel: MemosViewModel
+    private val memosViewModel: MemosViewModel,
+    private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<Memo, MemosAdapter.ViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +34,7 @@ class MemosAdapter(
         fun bind(memo: Memo) {
             binding.memo = memo
             binding.memosVM = memosViewModel
+            binding.lifecycleOwner = lifecycleOwner
         }
     }
 

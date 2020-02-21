@@ -7,6 +7,7 @@ import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.ui.category.CategoriesViewModel
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryViewModel
 import com.malibin.memo.ui.category.select.CategorySelectViewModel
+import com.malibin.memo.ui.memo.MemosViewModel
 import com.malibin.memo.ui.memo.edit.MemoEditViewModel
 import java.lang.IllegalArgumentException
 
@@ -23,6 +24,7 @@ class ViewModelFactory(
             AddModifyCategoryViewModel::class.java ->
                 modelClass.getConstructor(CATEGORY_REPO).newInstance(categoryRepository)
 
+            MemosViewModel::class.java,
             MemoEditViewModel::class.java ->
                 modelClass.getConstructor(MEMO_REPO, CATEGORY_REPO)
                     .newInstance(memoRepository, categoryRepository)

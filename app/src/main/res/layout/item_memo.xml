@@ -7,8 +7,6 @@
 
         <import type="android.view.View" />
 
-        <import type="java.util.Map" />
-
         <import type="com.malibin.memo.db.entity.Category" />
 
         <variable
@@ -19,24 +17,23 @@
             name="memosVM"
             type="com.malibin.memo.ui.memo.MemosViewModel" />
 
-        <variable
-            name="categoryMap"
-            type="Map&lt;String, Category&gt;" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/memo_category"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{categoryMap[memo.categoryId].name}"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{memosVM.categoryMap[memo.categoryId].name}"
             android:textSize="18sp"
+            app:bind_category_text_color="@{memosVM.categoryMap[memo.categoryId].colorCode}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
@@ -119,6 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="78dp"
             android:layout_marginTop="16dp"
+            android:visibility="@{memo.thumbnailByteCode == null ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@+id/memo_contents"
             app:layout_constraintStart_toStartOf="@+id/memo_contents"
             app:layout_constraintTop_toBottomOf="@+id/memo_contents">
@@ -127,6 +125,7 @@
                 android:id="@+id/memo_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:bind_image="@{memo.thumbnailByteCode}"
                 app:srcCompat="@android:color/darker_gray" />
         </androidx.cardview.widget.CardView>
