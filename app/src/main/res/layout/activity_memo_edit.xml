@@ -324,6 +324,15 @@
                     app:srcCompat="@drawable/btn_write" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+        <include
+            layout="@layout/window_loading"
+            android:visibility="@{memoEditVM.isLoading() ? View.INVISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

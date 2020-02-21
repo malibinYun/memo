@@ -3,6 +3,9 @@ package com.malibin.memo.ui.memo.edit
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.malibin.memo.R
@@ -12,12 +15,12 @@ import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.memo.edit.MemoEditActivity.Companion.REQUEST_CODE_CAMERA
 import com.malibin.memo.ui.memo.edit.MemoEditActivity.Companion.REQUEST_CODE_PICK_IMAGES
 import com.malibin.memo.ui.util.ImageLoader
 import com.malibin.memo.util.BaseViewModel
 import com.malibin.memo.util.DeployEvent
 import com.malibin.memo.util.MEMO_CATEGORY_SELECTED
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,6 +38,8 @@ class MemoEditViewModel(
     val category = MutableLiveData<Category>()
 
     val shownImagePosition = MutableLiveData<Int>().apply { value = 1 }
+
+    var externalCameraUri: Uri? = null
 
     private val originalImages = mutableListOf<Image>()
 
@@ -116,6 +121,11 @@ class MemoEditViewModel(
                 loadImageFromIntent(data)
             }
         }
+        if (requestCode == REQUEST_CODE_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
+                loadImageFromCamera()
+            }
+        }
     }
 
     fun handleRequestPermissionsResult(
@@ -124,14 +134,27 @@ class MemoEditViewModel(
         grantResults: IntArray
     ) {
         if (requestCode == MemoEditActivity.REQUEST_CODE_GALLERY_PERMISSION) {
-            val isPermissionGranted =
-                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            if (isPermissionGranted) {
+            if (isPermissionGranted(grantResults)) {
                 _deployEvent.value = DeployEvent(DeployEvent.GALLERY)
                 return
             }
             _toastMessage.value = R.string.gallery_permission_rejected
         }
+        if (requestCode == MemoEditActivity.REQUEST_CODE_CAMERA_PERMISSION) {
+            if (isPermissionGranted(grantResults)) {
+                _deployEvent.value = DeployEvent(DeployEvent.CAMERA)
+                return
+            }
+            _toastMessage.value = R.string.camera_permission_rejected
+        }
+    }
+
+    private fun isPermissionGranted(grantResults: IntArray): Boolean {
+        var result = grantResults.isNotEmpty()
+        for (grantResult in grantResults) {
+            result = result && (grantResult == PackageManager.PERMISSION_GRANTED)
+        }
+        return result
     }
 
     fun deploySelectCategory() {
@@ -140,6 +163,10 @@ class MemoEditViewModel(
 
     fun deployGallery() {
         _deployEvent.value = DeployEvent(DeployEvent.GALLERY)
+    }
+
+    fun deployCamera() {
+        _deployEvent.value = DeployEvent(DeployEvent.CAMERA)
     }
 
     private fun loadCategory(categoryId: String) {
@@ -173,6 +200,13 @@ class MemoEditViewModel(
             val uri = clipData.getItemAt(i).uri
             imageLoader.getImage(uri) { finishLoadImage(it) }
         }
+    }
+
+    private fun loadImageFromCamera() {
+        val uri = externalCameraUri ?: throw RuntimeException("externalCameraUri is null")
+        _isImageLoading.value = true
+        asyncCount = 1
+        imageLoader.getImage(uri) { finishLoadImage(it) }
     }
 
     private fun finishLoadImage(image: Image) {

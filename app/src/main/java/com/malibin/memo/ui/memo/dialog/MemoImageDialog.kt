@@ -27,6 +27,7 @@ class MemoImageDialog(
     }
 
     override fun getImageFromCamera() {
+        memoEditViewModel.deployCamera()
         dismiss()
     }
 

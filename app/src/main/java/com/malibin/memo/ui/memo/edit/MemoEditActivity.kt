@@ -1,10 +1,12 @@
 package com.malibin.memo.ui.memo.edit
 
-import android.annotation.TargetApi
+import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -104,19 +106,37 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         MemoImageDialog(this, memoEditViewModel).show()
     }
 
-    private fun deployGalleryOrRequestPermission() {
-        val previousPermissionGranted = ActivityCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
+    private fun deployCameraOrRequestPermission() {
+        if (isPermissionGrantedOf(Manifest.permission.CAMERA) &&
+            isPermissionGrantedOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        ) {
+            deployCamera()
+            return
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        requestPermissions(
+            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_CODE_CAMERA_PERMISSION
         )
-        val isPermissionGranted = previousPermissionGranted == PackageManager.PERMISSION_GRANTED
-        if (isPermissionGranted) {
+    }
+
+    private fun deployCamera() {
+        val values = ContentValues()
+        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
+        memoEditViewModel.externalCameraUri = imageUri
+    }
+
+    private fun deployGalleryOrRequestPermission() {
+        if (isPermissionGrantedOf(Manifest.permission.READ_EXTERNAL_STORAGE)) {
             deployGallery()
             return
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         requestPermissions(
-            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             REQUEST_CODE_GALLERY_PERMISSION
         )
     }
@@ -132,6 +152,12 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
             Intent.createChooser(photoPickerIntent, "select picture"),
             REQUEST_CODE_PICK_IMAGES
         )
+    }
+
+    private fun isPermissionGrantedOf(permission: String): Boolean {
+        val previousPermissionGranted =
+            ActivityCompat.checkSelfPermission(this, permission)
+        return previousPermissionGranted == PackageManager.PERMISSION_GRANTED
     }
 
     private fun subscribeViewModel(adapter: MemoImagePagerAdapter) {
@@ -177,6 +203,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         memoEditViewModel.deployEvent.observe(this, Observer {
             when (it.deployCode) {
                 DeployEvent.GALLERY -> deployGalleryOrRequestPermission()
+                DeployEvent.CAMERA -> deployCameraOrRequestPermission()
                 DeployEvent.SELECT_CATEGORY_ACT -> selectCategory()
             }
         })
@@ -185,6 +212,8 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
     companion object {
         const val REQUEST_CODE_GALLERY_PERMISSION = 1002
         const val REQUEST_CODE_PICK_IMAGES = 1003
-        const val REQUEST_CODE = 1005
+        const val REQUEST_CODE_CAMERA_PERMISSION = 1005
+        const val REQUEST_CODE_CAMERA = 1006
+        const val REQUEST_CODE = 1007
     }
 }

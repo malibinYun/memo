@@ -27,4 +27,5 @@
     <string name="delete_memo_canceled">메모 삭제가 취소되었습니다.</string>
     <string name="memo_deleted">메모가 삭제되었습니다.</string>
     <string name="memo_saved">메모가 저장되었습니다.</string>
+    <string name="camera_permission_rejected">권한을 거부하시면 카메라를 사용할 수 없습니다.</string>
 </resources>
