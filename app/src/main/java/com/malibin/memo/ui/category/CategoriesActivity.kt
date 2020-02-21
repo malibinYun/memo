@@ -74,8 +74,8 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
     }
 
     override fun filterMemosWith(categoryId: String) {
-        setResult(MEMO_CATEGORY_FILTER_RESULT)
         intent.putExtra("categoryId", categoryId)
+        setResult(MEMO_CATEGORY_FILTER_RESULT, intent)
         finish()
     }
 
@@ -122,5 +122,9 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
         viewModel.items.observe(this, Observer {
             adapter.submitList(ArrayList(it))
         })
+    }
+
+    companion object{
+        const val REQUEST_CODE = 1004
     }
 }

@@ -1,6 +1,6 @@
 package com.malibin.memo.ui.memo
 
-import android.util.Log
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.malibin.memo.R
@@ -8,7 +8,8 @@ import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Memo
-import com.malibin.memo.util.BaseViewModel
+import com.malibin.memo.ui.category.CategoriesActivity
+import com.malibin.memo.util.*
 import java.lang.RuntimeException
 
 class MemosViewModel(
@@ -22,32 +23,78 @@ class MemosViewModel(
     val items: LiveData<List<Memo>>
         get() = _items
 
+    private val _filteredCategory = MutableLiveData<Category>()
+    val filteredCategory: LiveData<Category>
+        get() = _filteredCategory
+
+    private val _isFiltered = MutableLiveData<Boolean>().apply { value = false }
+    val isFiltered: LiveData<Boolean>
+        get() = _isFiltered
+
+    private val _deployEvent = MutableLiveData<DeployEvent>()
+    val deployEvent: LiveData<DeployEvent>
+        get() = _deployEvent
+
     private val itemIdsToDelete = mutableListOf<String>()
 
     val categoryMap = HashMap<String, Category>()
 
     init {
         loadCategories()
-        loadMemos()
+        loadMemos(ALL_ID)
     }
 
-    private fun loadMemos() {
+    private fun loadMemos(categoryId: String) {
         _isLoading.value = true
         memoRepository.getMemosNoImages {
-            Log.d("MalibinD", it.toString())
-            _items.value = it
+            filterMemos(categoryId, it)
             _isLoading.value = false
         }
     }
 
     private fun loadCategories() {
         categoryRepository.getAllCategories {
-            Log.d("MalibinD", it.toString())
-
             for (category in it) {
                 categoryMap[category.id] = category
             }
         }
+    }
+
+    private fun filterMemos(categoryId: String, memos: List<Memo>) {
+        _isFiltered.value = false
+        if (categoryId == ALL_ID) {
+            _items.value = memos
+            _filteredCategory.value = ALL_CATEGORY
+            return
+        }
+        val filteredMemos = ArrayList(memos)
+        if (categoryId == IMPORTANT_ID) {
+            _items.value = filteredMemos.filter { it.isImportant }
+            _filteredCategory.value = IMPORTANT_CATEGORY
+            return
+        }
+        _items.value = filteredMemos.filter { it.categoryId == categoryId }
+        _filteredCategory.value = categoryMap[categoryId]
+        _isFiltered.value = true
+    }
+
+    fun handleActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (requestCode == CategoriesActivity.REQUEST_CODE) {
+            if (resultCode == MEMO_IMPORTANT_FILTER_RESULT) {
+                loadMemos(IMPORTANT_ID)
+            }
+            if (resultCode == MEMO_ALL_FILTER_RESULT) {
+                loadMemos(ALL_ID)
+            }
+            if (resultCode == MEMO_CATEGORY_FILTER_RESULT) {
+                val categoryId = intent?.getStringExtra("categoryId") ?: return
+                loadMemos(categoryId)
+            }
+        }
+    }
+
+    fun deployFilterCategory() {
+        _deployEvent.value = DeployEvent(DeployEvent.FILTER_CATEGORY_ACT)
     }
 
     fun activateDeleteMode() {
@@ -88,4 +135,10 @@ class MemosViewModel(
         return ArrayList(updatedMemos)
     }
 
+    companion object {
+        private const val IMPORTANT_ID = "important"
+        private const val ALL_ID = "all"
+        private val IMPORTANT_CATEGORY = Category(name = "중요 메모", colorCode = "")
+        private val ALL_CATEGORY = Category(name = "모든 메모", colorCode = "")
+    }
 }

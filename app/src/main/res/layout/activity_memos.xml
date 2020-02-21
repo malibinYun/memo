@@ -20,24 +20,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topbar"
-            android:layout_width="409dp"
+            android:layout_width="0dp"
             android:layout_height="80dp"
+            app:bind_background_color="@{memosVM.filteredCategory.colorCode}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_category_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="TextView"
-                android:textColor="@android:color/black"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/btn_search"
@@ -48,6 +36,41 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/btn_search" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_filter_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:onClick="@{(view) -> memosVM.deployFilterCategory()}"
+                app:bind_selected="@{memosVM.isFiltered().booleanValue()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{memosVM.filteredCategory.name}"
+                    android:textColor="@color/selector_black_white_color"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_category_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_category_name"
+                    app:srcCompat="@drawable/selector_btn_category_arrow" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
