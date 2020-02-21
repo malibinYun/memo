@@ -13,6 +13,7 @@ import com.malibin.memo.databinding.ActivityMemosBinding
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.ui.category.CategoriesActivity
 import com.malibin.memo.ui.memo.edit.MemoEditActivity
+import com.malibin.memo.ui.util.getColorMatchVersion
 import com.malibin.memo.util.DeployEvent.Companion.FILTER_CATEGORY_ACT
 import com.malibin.memo.util.DeployEvent.Companion.NEW_MEMO_EDIT_ACT
 import org.koin.android.ext.android.inject
@@ -94,7 +95,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
                 return@Observer
             }
             val categoryColor = Category.Color.valueOf(it.colorCode).resId
-            window.statusBarColor = getColor(categoryColor)
+            window.statusBarColor = getColorMatchVersion(categoryColor)
         })
     }
 }

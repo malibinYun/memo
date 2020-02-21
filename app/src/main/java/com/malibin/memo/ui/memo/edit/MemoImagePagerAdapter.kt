@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.malibin.memo.databinding.WindowAddImageBinding
 import com.malibin.memo.databinding.WindowImageBinding
 import com.malibin.memo.db.entity.Image
-import com.malibin.memo.util.toBitmap
 
 class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
 
@@ -63,11 +62,9 @@ class MemoImagePagerAdapter(private val context: Context) : PagerAdapter() {
     }
 
     private fun loadImage(image: Image, imageView: ImageView) {
-        image.byteCode.toBitmap {
-            Glide.with(context)
-                .load(it)
-                .into(imageView)
-        }
+        Glide.with(context)
+            .load(image.byteCode)
+            .into(imageView)
     }
 
     fun submitList(imageList: List<Image>) {

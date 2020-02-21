@@ -5,18 +5,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.malibin.memo.R
 import com.malibin.memo.db.entity.Category
-import com.malibin.memo.util.toBitmap
+import com.malibin.memo.ui.util.getColorMatchVersion
 import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter("bind_image")
 fun bindImage(imageView: ImageView, byteArray: ByteArray?) {
-    if (byteArray == null) imageView.visibility = View.GONE
-    byteArray?.toBitmap {
-        Glide.with(imageView).load(it).into(imageView)
-    }
+    Glide.with(imageView).load(byteArray).into(imageView)
 }
 
 @BindingAdapter("bind_memo_date")
@@ -30,7 +26,7 @@ fun bindMemoDate(textView: TextView, date: Long) {
 @BindingAdapter("bind_category_text_color")
 fun bindCategoryTextColor(textView: TextView, colorCode: String) {
     val colorRes = Category.Color.valueOf(colorCode).resId
-    val color = textView.context.getColor(colorRes)
+    val color = textView.context.getColorMatchVersion(colorRes)
     textView.setTextColor(color)
 }
 
@@ -38,12 +34,12 @@ fun bindCategoryTextColor(textView: TextView, colorCode: String) {
 fun bindBackgroundColor(view: View, colorCode: String?) {
     val context = view.context
     if (colorCode.isNullOrEmpty()) {
-        val whiteColor = context.getColor(android.R.color.white)
+        val whiteColor = context.getColorMatchVersion(android.R.color.white)
         view.setBackgroundColor(whiteColor)
         return
     }
     val colorRes = Category.Color.valueOf(colorCode).resId
-    val categoryColor = context.getColor(colorRes)
+    val categoryColor = context.getColorMatchVersion(colorRes)
     view.setBackgroundColor(categoryColor)
 }
 

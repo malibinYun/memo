@@ -74,7 +74,8 @@ class CategoriesViewModel(
         val updatedCategories = ArrayList<Category>()
         updatedCategories.addAll(_items.value ?: emptyList())
         for (itemId in itemIdsToDelete) {
-            updatedCategories.removeIf { it.id == itemId }
+            val itemToDelete = updatedCategories.find { it.id == itemId }
+            updatedCategories.remove(itemToDelete)
             categoryRepository.deleteCategory(itemId)
         }
         return ArrayList(updatedCategories)

@@ -86,6 +86,7 @@
             android:text="@{memo.title}"
             android:textColor="@color/textBlack"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/memo_date"
             app:layout_constraintEnd_toStartOf="@+id/memo_delete_check"
             app:layout_constraintStart_toEndOf="@+id/memo_alarm"

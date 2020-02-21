@@ -1,7 +1,9 @@
 package com.malibin.memo.ui.memo.edit
 
+import android.annotation.TargetApi
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -112,6 +114,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
             deployGallery()
             return
         }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         requestPermissions(
             arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
             REQUEST_CODE_GALLERY_PERMISSION

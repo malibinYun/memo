@@ -96,8 +96,10 @@ class MemosViewModel(
             if (resultCode == MEMO_SAVED || resultCode == MEMO_DELETED) {
                 val currentCategory = _filteredCategory.value ?: return
                 refreshMemoAndCategories(currentCategory.id)
-                _toastMessage.value = R.string.memo_saved
             }
+            if (resultCode == MEMO_SAVED) _toastMessage.value = R.string.memo_saved
+            if (resultCode == MEMO_DELETED) _toastMessage.value = R.string.memo_deleted
+            if (resultCode == MEMO_EDIT_CANCELED) _toastMessage.value = R.string.edit_memo_canceled
         }
     }
 
@@ -138,7 +140,7 @@ class MemosViewModel(
         }
         _items.value = createUpdatedMemos()
         itemIdsToDelete.clear()
-        _toastMessage.value = R.string.delete_memo_finished
+        _toastMessage.value = R.string.memo_deleted
         isDeleteMode.value = false
     }
 
@@ -146,7 +148,8 @@ class MemosViewModel(
         val updatedMemos = ArrayList<Memo>()
         updatedMemos.addAll(_items.value ?: emptyList())
         for (itemId in itemIdsToDelete) {
-            updatedMemos.removeIf { it.id == itemId }
+            val itemToDelete = updatedMemos.find { it.id == itemId }
+            updatedMemos.remove(itemToDelete)
             memoRepository.deleteMemoById(itemId)
         }
         return ArrayList(updatedMemos)
