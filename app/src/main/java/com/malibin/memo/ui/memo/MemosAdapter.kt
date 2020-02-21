@@ -1,6 +1,7 @@
 package com.malibin.memo.ui.memo
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +14,8 @@ class MemosAdapter(
     private val memosViewModel: MemosViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<Memo, MemosAdapter.ViewHolder>(DiffCallBack()) {
+
+    private var itemClickListener: ((memoId: String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -27,6 +30,14 @@ class MemosAdapter(
         holder.bind(memo)
     }
 
+    fun setItemClickListener(listener: (memoId: String) -> Unit) {
+        itemClickListener = listener
+    }
+
+    private fun createItemClickListener(memoId: String) = View.OnClickListener {
+        itemClickListener?.invoke(memoId)
+    }
+
     inner class ViewHolder(
         private val binding: ItemMemoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -35,6 +46,7 @@ class MemosAdapter(
             binding.memo = memo
             binding.memosVM = memosViewModel
             binding.lifecycleOwner = lifecycleOwner
+            binding.itemClickListener = createItemClickListener(memo.id)
         }
     }
 

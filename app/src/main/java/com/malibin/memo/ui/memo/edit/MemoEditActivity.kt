@@ -182,5 +182,6 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
     companion object {
         const val REQUEST_CODE_GALLERY_PERMISSION = 1002
         const val REQUEST_CODE_PICK_IMAGES = 1003
+        const val REQUEST_CODE = 1005
     }
 }

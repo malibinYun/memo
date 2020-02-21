@@ -21,6 +21,7 @@ class ImageLoader(private val memoId: String) : KoinComponent {
         Glide.with(context)
             .asBitmap()
             .load(uri)
+            .override(1000, 1000)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
 

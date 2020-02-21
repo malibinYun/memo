@@ -12,7 +12,9 @@ import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemosBinding
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.ui.category.CategoriesActivity
-import com.malibin.memo.util.DeployEvent
+import com.malibin.memo.ui.memo.edit.MemoEditActivity
+import com.malibin.memo.util.DeployEvent.Companion.FILTER_CATEGORY_ACT
+import com.malibin.memo.util.DeployEvent.Companion.NEW_MEMO_EDIT_ACT
 import org.koin.android.ext.android.inject
 
 class MemosActivity : AppCompatActivity(), MemosNavigator {
@@ -26,6 +28,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
         memosViewModel = ViewModelProvider(this, viewModelFactory)[MemosViewModel::class.java]
 
         val memosAdapter = MemosAdapter(memosViewModel, this)
+        setMemoClickListener(memosAdapter)
 
         val binding: ActivityMemosBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_memos)
@@ -51,6 +54,18 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
         startActivityForResult(intent, CategoriesActivity.REQUEST_CODE)
     }
 
+    override fun editMemo(memoId: String?) {
+        val intent = Intent(this, MemoEditActivity::class.java)
+        intent.putExtra("memoId", memoId)
+        startActivityForResult(intent, MemoEditActivity.REQUEST_CODE)
+    }
+
+    private fun setMemoClickListener(adapter: MemosAdapter) {
+        adapter.setItemClickListener {
+            editMemo(it)
+        }
+    }
+
     private fun subscribeMemos(memosAdapter: MemosAdapter) {
         memosViewModel.items.observe(this, Observer {
             memosAdapter.submitList(it)
@@ -66,7 +81,8 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
     private fun subscribeDeployEvent() {
         memosViewModel.deployEvent.observe(this, Observer {
             when (it.deployCode) {
-                DeployEvent.FILTER_CATEGORY_ACT -> filterCategory()
+                FILTER_CATEGORY_ACT -> filterCategory()
+                NEW_MEMO_EDIT_ACT -> editMemo(null)
             }
         })
     }

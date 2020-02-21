@@ -8,5 +8,6 @@ class DeployEvent(val deployCode: Int) {
         const val SELECT_CATEGORY_ACT = 3
         const val MEMO_IMAGE_DIALOG = 4
         const val FILTER_CATEGORY_ACT = 5
+        const val NEW_MEMO_EDIT_ACT = 6
     }
 }

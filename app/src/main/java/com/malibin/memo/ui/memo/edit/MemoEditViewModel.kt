@@ -252,7 +252,8 @@ class MemoEditViewModel(
 
     private fun injectFieldsInMemo(memo: Memo) {
         memo.title = this.title.value ?: throw RuntimeException("Cannot get title")
-        memo.content = this.content.value ?: throw RuntimeException("Cannot get content")
+        memo.content = this.content.value ?: ""
+        memo.isImportant = this.isImportant.value ?: false
         memo.categoryId =
             this.category.value?.id ?: throw RuntimeException("Cannot get categoryId")
         val images = this._shownImages.value ?: listOf()

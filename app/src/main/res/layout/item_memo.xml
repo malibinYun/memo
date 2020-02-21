@@ -17,12 +17,17 @@
             name="memosVM"
             type="com.malibin.memo.ui.memo.MemosViewModel" />
 
+        <variable
+            name="itemClickListener"
+            type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:onClick="@{itemClickListener}">
 
         <TextView
             android:id="@+id/memo_category"
@@ -55,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:visibility="@{memo.important ? View.VISIBLE : View.GONE}"
+            android:visibility="@{memo.important ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/memo_title"
             app:layout_constraintStart_toEndOf="@+id/memo_date"
             app:layout_constraintTop_toTopOf="@+id/memo_title"
@@ -75,7 +80,6 @@
             android:id="@+id/memo_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -116,7 +120,9 @@
             android:layout_width="0dp"
             android:layout_height="78dp"
             android:layout_marginTop="16dp"
+            android:elevation="-1dp"
             android:visibility="@{memo.thumbnailByteCode == null ? View.GONE : View.VISIBLE}"
+            app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="@+id/memo_contents"
             app:layout_constraintStart_toStartOf="@+id/memo_contents"
             app:layout_constraintTop_toBottomOf="@+id/memo_contents">

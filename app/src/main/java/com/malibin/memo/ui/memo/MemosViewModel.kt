@@ -9,6 +9,7 @@ import com.malibin.memo.db.MemoRepository
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.CategoriesActivity
+import com.malibin.memo.ui.memo.edit.MemoEditActivity
 import com.malibin.memo.util.*
 import java.lang.RuntimeException
 
@@ -91,10 +92,26 @@ class MemosViewModel(
                 loadMemos(categoryId)
             }
         }
+        if (requestCode == MemoEditActivity.REQUEST_CODE) {
+            if (resultCode == MEMO_SAVED || resultCode == MEMO_DELETED) {
+                val currentCategory = _filteredCategory.value ?: return
+                refreshMemoAndCategories(currentCategory.id)
+                _toastMessage.value = R.string.memo_saved
+            }
+        }
+    }
+
+    private fun refreshMemoAndCategories(categoryId: String) {
+        loadCategories()
+        loadMemos(categoryId)
     }
 
     fun deployFilterCategory() {
         _deployEvent.value = DeployEvent(DeployEvent.FILTER_CATEGORY_ACT)
+    }
+
+    fun deployMemoEditCategory() {
+        _deployEvent.value = DeployEvent(DeployEvent.NEW_MEMO_EDIT_ACT)
     }
 
     fun activateDeleteMode() {
@@ -138,7 +155,7 @@ class MemosViewModel(
     companion object {
         private const val IMPORTANT_ID = "important"
         private const val ALL_ID = "all"
-        private val IMPORTANT_CATEGORY = Category(name = "중요 메모", colorCode = "")
-        private val ALL_CATEGORY = Category(name = "모든 메모", colorCode = "")
+        private val IMPORTANT_CATEGORY = Category(IMPORTANT_ID, "중요 메모", "")
+        private val ALL_CATEGORY = Category(ALL_ID, "모든 메모", "")
     }
 }
