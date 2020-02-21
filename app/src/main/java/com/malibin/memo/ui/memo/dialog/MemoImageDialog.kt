@@ -32,6 +32,7 @@ class MemoImageDialog(
     }
 
     override fun getImageFromUrl() {
+        memoEditViewModel.deployGetExternalImage()
         dismiss()
     }
 }

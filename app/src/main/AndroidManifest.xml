@@ -15,6 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.externalimage.GetExternalImageActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".ui.memo.MemosActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.memo.edit.MemoEditActivity">
-
-        </activity>
-        <activity android:name=".ui.category.select.CategorySelectActivity"></activity>
+        <activity android:name=".ui.memo.edit.MemoEditActivity"></activity>
+        <activity android:name=".ui.category.select.CategorySelectActivity" />
         <activity android:name=".ui.category.CategoriesActivity" />
         <activity android:name=".ui.category.addmodify.AddModifyCategoryActivity" />
         <activity android:name=".MainActivity" />

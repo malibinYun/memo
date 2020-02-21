@@ -169,6 +169,10 @@ class MemoEditViewModel(
         _deployEvent.value = DeployEvent(DeployEvent.CAMERA)
     }
 
+    fun deployGetExternalImage() {
+        _deployEvent.value = DeployEvent(DeployEvent.GET_EXTERNAL_IMAGE_ACT)
+    }
+
     private fun loadCategory(categoryId: String) {
         categoryRepository.getCategory(categoryId) {
             val category = it ?: throw RuntimeException("category exist but cannot loaded")

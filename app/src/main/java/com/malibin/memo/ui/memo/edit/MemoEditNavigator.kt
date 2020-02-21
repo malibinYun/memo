@@ -10,6 +10,6 @@ interface MemoEditNavigator {
 
     fun selectCategory()
 
-//    fun getImage()
+    fun getExternalImage()
 
 }

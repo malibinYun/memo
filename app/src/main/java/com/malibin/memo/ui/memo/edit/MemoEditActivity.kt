@@ -17,6 +17,7 @@ import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.externalimage.GetExternalImageActivity
 import com.malibin.memo.ui.memo.dialog.MemoImageDialog
 import com.malibin.memo.util.DeployEvent
 import com.malibin.memo.util.MEMO_DELETED
@@ -88,6 +89,11 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
     override fun selectCategory() {
         val intent = Intent(this, CategorySelectActivity::class.java)
         startActivityForResult(intent, CategorySelectActivity.REQUEST_CODE)
+    }
+
+    override fun getExternalImage() {
+        val intent = Intent(this, GetExternalImageActivity::class.java)
+        startActivityForResult(intent, GetExternalImageActivity.REQUEST_CODE)
     }
 
     private fun getTossedMemoId(): String? {
@@ -205,6 +211,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
                 DeployEvent.GALLERY -> deployGalleryOrRequestPermission()
                 DeployEvent.CAMERA -> deployCameraOrRequestPermission()
                 DeployEvent.SELECT_CATEGORY_ACT -> selectCategory()
+                DeployEvent.GET_EXTERNAL_IMAGE_ACT -> getExternalImage()
             }
         })
     }

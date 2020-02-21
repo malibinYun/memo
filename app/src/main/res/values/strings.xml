@@ -28,4 +28,7 @@
     <string name="memo_deleted">메모가 삭제되었습니다.</string>
     <string name="memo_saved">메모가 저장되었습니다.</string>
     <string name="camera_permission_rejected">권한을 거부하시면 카메라를 사용할 수 없습니다.</string>
+    <string name="input_external_url">이미지 URL을 입력해주세요.</string>
+    <string name="load">불러오기</string>
+    <string name="get_image">이미지 가져오기</string>
 </resources>
