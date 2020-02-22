@@ -28,8 +28,9 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
 
         memosViewModel = ViewModelProvider(this, viewModelFactory)[MemosViewModel::class.java]
 
-        val memosAdapter = MemosAdapter(memosViewModel, this)
-        setMemoClickListener(memosAdapter)
+        val memosAdapter = MemosAdapter(memosViewModel, this).apply {
+            setItemClickListener { editMemo(it) }
+        }
 
         val binding: ActivityMemosBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_memos)
@@ -59,12 +60,6 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
         val intent = Intent(this, MemoEditActivity::class.java)
         intent.putExtra("memoId", memoId)
         startActivityForResult(intent, MemoEditActivity.REQUEST_CODE)
-    }
-
-    private fun setMemoClickListener(adapter: MemosAdapter) {
-        adapter.setItemClickListener {
-            editMemo(it)
-        }
     }
 
     private fun subscribeMemos(memosAdapter: MemosAdapter) {
