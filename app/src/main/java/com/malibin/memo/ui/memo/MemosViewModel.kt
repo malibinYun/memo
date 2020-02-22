@@ -11,7 +11,6 @@ import com.malibin.memo.db.entity.Memo
 import com.malibin.memo.ui.category.CategoriesActivity
 import com.malibin.memo.ui.memo.edit.MemoEditActivity
 import com.malibin.memo.util.*
-import java.lang.RuntimeException
 
 class MemosViewModel(
     private val memoRepository: MemoRepository,
@@ -55,9 +54,14 @@ class MemosViewModel(
 
     private fun loadCategories() {
         categoryRepository.getAllCategories {
-            for (category in it) {
-                categoryMap[category.id] = category
-            }
+            refreshCategoryMap(it)
+        }
+    }
+
+    private fun refreshCategoryMap(categories: List<Category>) {
+        categoryMap.clear()
+        for (category in categories) {
+            categoryMap[category.id] = category
         }
     }
 
