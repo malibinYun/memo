@@ -80,32 +80,34 @@ class MemosViewModel(
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        loadCategories()
         if (requestCode == CategoriesActivity.REQUEST_CODE) {
             if (resultCode == MEMO_IMPORTANT_FILTER_RESULT) {
                 loadMemos(IMPORTANT_ID)
+                return
             }
             if (resultCode == MEMO_ALL_FILTER_RESULT) {
                 loadMemos(ALL_ID)
+                return
             }
             if (resultCode == MEMO_CATEGORY_FILTER_RESULT) {
                 val categoryId = intent?.getStringExtra("categoryId") ?: return
                 loadMemos(categoryId)
+                return
             }
         }
         if (requestCode == MemoEditActivity.REQUEST_CODE) {
-            if (resultCode == MEMO_SAVED || resultCode == MEMO_DELETED) {
-                val currentCategory = _filteredCategory.value ?: return
-                refreshMemoAndCategories(currentCategory.id)
-            }
             if (resultCode == MEMO_SAVED) _toastMessage.value = R.string.memo_saved
             if (resultCode == MEMO_DELETED) _toastMessage.value = R.string.memo_deleted
             if (resultCode == MEMO_EDIT_CANCELED) _toastMessage.value = R.string.edit_memo_canceled
+            refreshAll()
         }
     }
 
-    private fun refreshMemoAndCategories(categoryId: String) {
+    private fun refreshAll() {
+        val currentCategory = _filteredCategory.value ?: return
         loadCategories()
-        loadMemos(categoryId)
+        loadMemos(currentCategory.id)
     }
 
     fun deployFilterCategory() {

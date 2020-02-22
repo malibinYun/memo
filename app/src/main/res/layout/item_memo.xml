@@ -26,7 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:onClick="@{itemClickListener}">
 
         <TextView
@@ -121,16 +121,18 @@
             android:layout_width="0dp"
             android:layout_height="78dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:elevation="-1dp"
             android:visibility="@{memo.thumbnailByteCode == null ? View.GONE : View.VISIBLE}"
             app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/memo_contents"
             app:layout_constraintStart_toStartOf="@+id/memo_contents"
             app:layout_constraintTop_toBottomOf="@+id/memo_contents">
 
             <ImageView
                 android:id="@+id/memo_thumbnail"
-                android:layout_width="match_parent"
+                android:layout_width="317dp"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:bind_image="@{memo.thumbnailByteCode}"

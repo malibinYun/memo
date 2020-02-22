@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:padding="8dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/btn_search" />
@@ -84,13 +85,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:id="@+id/btn_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     android:paddingStart="12dp"
                     android:paddingTop="8dp"
@@ -98,6 +99,7 @@
                     android:paddingBottom="8dp"
                     android:text="@string/edit"
                     android:textColor="@color/winterSky"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
