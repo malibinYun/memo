@@ -1,17 +1,13 @@
 package com.malibin.memo.db.entity
 
 import androidx.annotation.VisibleForTesting
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = Category::class,
-        parentColumns = ["category_id"],
-        childColumns = ["memo_category_id"],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
+@Entity
 data class Memo(
 
     @PrimaryKey
