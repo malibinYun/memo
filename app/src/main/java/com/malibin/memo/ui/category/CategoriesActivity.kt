@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityCategoryBinding
 import com.malibin.memo.ui.category.addmodify.AddModifyCategoryActivity
+import com.malibin.memo.ui.dialog.DeleteWarningDialog
 import com.malibin.memo.util.MEMO_ALL_FILTER_RESULT
 import com.malibin.memo.util.MEMO_CATEGORY_FILTER_RESULT
 import com.malibin.memo.util.MEMO_IMPORTANT_FILTER_RESULT
@@ -26,8 +27,6 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
         categoriesViewModel =
             ViewModelProvider(this, viewModelFactory)[CategoriesViewModel::class.java]
 
-        subscribeToastMessage(categoriesViewModel)
-
         val binding: ActivityCategoryBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_category)
         val categoryAdapter = createCategoriesAdapter()
@@ -38,7 +37,9 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
             categoriesNavigator = this@CategoriesActivity
             rvCategories.adapter = categoryAdapter
         }
-        subscribeCategories(categoriesViewModel, categoryAdapter)
+        subscribeToastMessage()
+        subscribeDeployEvent()
+        subscribeCategories(categoryAdapter)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -71,6 +72,14 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
     override fun filterWithAll() {
         setResult(MEMO_ALL_FILTER_RESULT)
         finish()
+    }
+
+    override fun deployDeleteWarningDialog() {
+        DeleteWarningDialog(this).apply {
+            content = getString(R.string.delete_category_cascade_memos)
+            setOkClickListener { categoriesViewModel.deleteCategories() }
+            setCancelClickListener { categoriesViewModel.cancelEditCategories() }
+        }.show()
     }
 
     override fun filterMemosWith(categoryId: String) {
@@ -112,19 +121,25 @@ class CategoriesActivity : AppCompatActivity(), CategoriesNavigator, CategoriesI
         }
     }
 
-    private fun subscribeToastMessage(viewModel: CategoriesViewModel) {
-        viewModel.toastMessage.observe(this, Observer { stringId ->
+    private fun subscribeToastMessage() {
+        categoriesViewModel.toastMessage.observe(this, Observer { stringId ->
             Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
         })
     }
 
-    private fun subscribeCategories(viewModel: CategoriesViewModel, adapter: CategoriesAdapter) {
-        viewModel.items.observe(this, Observer {
+    private fun subscribeDeployEvent() {
+        categoriesViewModel.deployEvent.observe(this, Observer {
+            this@CategoriesActivity.deployDeleteWarningDialog()
+        })
+    }
+
+    private fun subscribeCategories(adapter: CategoriesAdapter) {
+        categoriesViewModel.items.observe(this, Observer {
             adapter.submitList(ArrayList(it))
         })
     }
 
-    companion object{
+    companion object {
         const val REQUEST_CODE = 1004
     }
 }

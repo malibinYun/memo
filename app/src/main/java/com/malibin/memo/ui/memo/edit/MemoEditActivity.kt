@@ -98,6 +98,12 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
         startActivityForResult(intent, GetExternalImageActivity.REQUEST_CODE)
     }
 
+    override fun deployDeleteWarningDialog() {
+        DeleteWarningDialog(this).apply {
+            setOkClickListener { memoEditViewModel.deleteMemo() }
+        }.show()
+    }
+
     private fun getTossedMemoId(): String? {
         return intent.getStringExtra("memoId")
     }
@@ -108,12 +114,6 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
 
     private fun onImageClick(image: Image) {
 
-    }
-
-    private fun deployDeleteWarningDialog() {
-        DeleteWarningDialog(this).apply {
-            setOkClickListener { memoEditViewModel.deleteMemo() }
-        }.show()
     }
 
     private fun deployMemoImageDialog() {

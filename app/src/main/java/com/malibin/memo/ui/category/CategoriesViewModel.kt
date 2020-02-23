@@ -7,6 +7,7 @@ import com.malibin.memo.db.CategoryRepository
 import com.malibin.memo.db.entity.Category
 import com.malibin.memo.util.BaseViewModel
 import com.malibin.memo.util.CATEGORY_SAVE_RESULT_OK
+import com.malibin.memo.util.DeployEvent
 import java.lang.RuntimeException
 
 class CategoriesViewModel(
@@ -20,6 +21,10 @@ class CategoriesViewModel(
     private val _items = MutableLiveData<List<Category>>().apply { value = emptyList() }
     val items: LiveData<List<Category>>
         get() = _items
+
+    private val _deployEvent = MutableLiveData<DeployEvent>()
+    val deployEvent: LiveData<DeployEvent>
+        get() = _deployEvent
 
     init {
         loadCategories()
@@ -64,6 +69,14 @@ class CategoriesViewModel(
             isEditMode.value = false
             return
         }
+        deployDeleteWarningDialog()
+    }
+
+    fun deployDeleteWarningDialog() {
+        _deployEvent.value = DeployEvent(DeployEvent.DELETE_WARNING_DIALOG)
+    }
+
+    fun deleteCategories() {
         _items.value = createUpdatedCategories()
         itemIdsToDelete.clear()
         _toastMessage.value = R.string.edit_category_is_finished

@@ -8,4 +8,5 @@ interface CategoriesNavigator {
 
     fun filterWithAll()
 
+    fun deployDeleteWarningDialog()
 }
