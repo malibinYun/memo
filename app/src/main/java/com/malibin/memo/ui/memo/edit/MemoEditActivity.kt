@@ -17,6 +17,8 @@ import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.ui.category.select.CategorySelectActivity
+import com.malibin.memo.ui.dialog.DeleteWarningDialog
+import com.malibin.memo.ui.dialog.SimpleDialog
 import com.malibin.memo.ui.externalimage.GetExternalImageActivity
 import com.malibin.memo.ui.memo.dialog.MemoImageDialog
 import com.malibin.memo.util.DeployEvent
@@ -106,6 +108,12 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
 
     private fun onImageClick(image: Image) {
 
+    }
+
+    private fun deployDeleteWarningDialog() {
+        DeleteWarningDialog(this).apply {
+            setOkClickListener { memoEditViewModel.deleteMemo() }
+        }.show()
     }
 
     private fun deployMemoImageDialog() {
@@ -212,6 +220,7 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
                 DeployEvent.CAMERA -> deployCameraOrRequestPermission()
                 DeployEvent.SELECT_CATEGORY_ACT -> selectCategory()
                 DeployEvent.GET_EXTERNAL_IMAGE_ACT -> getExternalImage()
+                DeployEvent.DELETE_WARNING_DIALOG -> deployDeleteWarningDialog()
             }
         })
     }

@@ -1,12 +1,13 @@
 package com.malibin.memo.ui.dialog
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import com.malibin.memo.R
 import com.malibin.memo.databinding.DialogSimpleTwoButtonBinding
 
-open class SimpleDialog(context: Context) : Dialog(context), SimpleDialogOnClickListener {
+open class SimpleDialog(context: Context) : AlertDialog(context), SimpleDialogOnClickListener {
 
     var title: String = ""
     var content: String = ""
@@ -23,6 +24,11 @@ open class SimpleDialog(context: Context) : Dialog(context), SimpleDialogOnClick
             content.text = this@SimpleDialog.content
         }
         setContentView(binding.root)
+        setTransparentWindowBackground()
+    }
+
+    private fun setTransparentWindowBackground() {
+        window?.setBackgroundDrawableResource(R.color.transparent)
     }
 
     override fun onCancelClick(view: View) {
@@ -45,5 +51,4 @@ open class SimpleDialog(context: Context) : Dialog(context), SimpleDialogOnClick
     fun setOkClickListener(listener: ((view: View) -> Unit)?) {
         okClickListener = listener
     }
-
 }

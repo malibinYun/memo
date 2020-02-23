@@ -182,6 +182,10 @@ class MemoEditViewModel(
         _deployEvent.value = DeployEvent(DeployEvent.GET_EXTERNAL_IMAGE_ACT)
     }
 
+    fun deployDeleteWarningDialog(){
+        _deployEvent.value = DeployEvent(DeployEvent.DELETE_WARNING_DIALOG)
+    }
+
     private fun loadCategory(categoryId: String) {
         categoryRepository.getCategory(categoryId) {
             val category = it ?: throw RuntimeException("category exist but cannot loaded")

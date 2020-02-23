@@ -10,5 +10,6 @@ class DeployEvent(val deployCode: Int) {
         const val FILTER_CATEGORY_ACT = 5
         const val NEW_MEMO_EDIT_ACT = 6
         const val GET_EXTERNAL_IMAGE_ACT = 7
+        const val DELETE_WARNING_DIALOG = 8
     }
 }
