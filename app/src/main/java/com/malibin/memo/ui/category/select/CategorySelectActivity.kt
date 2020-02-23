@@ -23,6 +23,7 @@ class CategorySelectActivity : AppCompatActivity(), CategorySelectNavigator {
 
         categorySelectViewModel =
             ViewModelProvider(this, viewModelFactory)[CategorySelectViewModel::class.java]
+        categorySelectViewModel.start()
 
         val binding: ActivityCategorySelectBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_category_select)

@@ -19,7 +19,7 @@ class CategorySelectViewModel(
     val newItemEvent: LiveData<Boolean>
         get() = _newItemEvent
 
-    init {
+    fun start() {
         loadCategories()
     }
 
@@ -31,7 +31,7 @@ class CategorySelectViewModel(
         }
     }
 
-    fun addNewCategory() {
+    fun addNewCategoryEvent() {
         _newItemEvent.value = true
     }
 

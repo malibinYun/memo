@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:onClick="@{(view) -> categorySelectVM.addNewCategory()}"
+                android:onClick="@{(view) -> categorySelectVM.addNewCategoryEvent()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line2"
                 app:srcCompat="@drawable/img_plus" />
@@ -110,7 +110,7 @@
                 android:id="@+id/tbtn_add_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{(view) -> categorySelectVM.addNewCategory()}"
+                android:onClick="@{(view) -> categorySelectVM.addNewCategoryEvent()}"
                 android:paddingStart="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/add_category"
