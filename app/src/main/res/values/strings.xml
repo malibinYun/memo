@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Memo</string>
+    <string name="app_name">모메메모장</string>
     <string name="category">카테고리</string>
     <string name="input_category">카테고리를 입력해주세요.</string>
     <string name="add">추가하기</string>
