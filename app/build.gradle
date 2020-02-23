@@ -79,3 +79,9 @@ dependencies {
     androidTestImplementation "androidx.test:rules:1.2.0"
 }
 
+// 라이브러리 출처
+// Koin - https://github.com/InsertKoinIO/koin
+// Glide - https://github.com/bumptech/glide
+// mockito - https://site.mockito.org/
+// mockito kotlin - https://github.com/nhaarman/mockito-kotlin
+
