@@ -7,7 +7,7 @@ import com.malibin.memo.db.entity.Memo
 @Dao
 abstract class MemoDao {
 
-    @Query("SELECT * FROM memo")
+    @Query("SELECT * FROM memo ORDER BY memo_created_date DESC")
     abstract fun getMemosNoImages(): List<Memo>
 
     @Query("SELECT * FROM memo WHERE memo_id = :memoId")
