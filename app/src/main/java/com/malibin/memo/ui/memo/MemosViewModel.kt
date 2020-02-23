@@ -36,9 +36,11 @@ class MemosViewModel(
     val deployEvent: LiveData<DeployEvent>
         get() = _deployEvent
 
-    private val itemIdsToDelete = mutableListOf<String>()
+    private val _categoryMap = MutableLiveData<Map<String, Category>>()
+    val categoryMap: LiveData<Map<String, Category>>
+        get() = _categoryMap
 
-    val categoryMap = HashMap<String, Category>()
+    private val itemIdsToDelete = mutableListOf<String>()
 
     init {
         loadCategories()
@@ -55,10 +57,16 @@ class MemosViewModel(
 
     private fun loadCategories() {
         categoryRepository.getAllCategories {
-            for (category in it) {
-                categoryMap[category.id] = category
-            }
+            _categoryMap.value = createCategoryMap(it)
         }
+    }
+
+    private fun createCategoryMap(categories: List<Category>): Map<String, Category> {
+        val result = HashMap<String, Category>()
+        for (category in categories) {
+            result[category.id] = category
+        }
+        return result
     }
 
     private fun filterMemos(categoryId: String, memos: List<Memo>) {
@@ -75,12 +83,14 @@ class MemosViewModel(
             return
         }
         _items.value = filteredMemos.filter { it.categoryId == categoryId }
-        _filteredCategory.value = categoryMap[categoryId]
+        categoryRepository.getCategory(categoryId) {}
+        _filteredCategory.value = _categoryMap.value?.get(categoryId) ?: throw RuntimeException()
         _isFiltered.value = true
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         loadCategories()
+        detectCurrentCategoryChanged()
         if (requestCode == CategoriesActivity.REQUEST_CODE) {
             if (resultCode == MEMO_IMPORTANT_FILTER_RESULT) {
                 loadMemos(IMPORTANT_ID)
@@ -108,6 +118,20 @@ class MemosViewModel(
         val currentCategory = _filteredCategory.value ?: return
         loadCategories()
         loadMemos(currentCategory.id)
+    }
+
+    private fun detectCurrentCategoryChanged() {
+        val currentCategory = _filteredCategory.value ?: return
+        if (currentCategory == ALL_CATEGORY || currentCategory == IMPORTANT_CATEGORY) {
+            return
+        }
+        categoryRepository.getCategory(currentCategory.id) {
+            if (it == null) {
+                loadMemos(ALL_ID)
+                return@getCategory
+            }
+            if (it != currentCategory) _filteredCategory.value = it
+        }
     }
 
     fun deployFilterCategory() {

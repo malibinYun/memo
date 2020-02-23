@@ -24,8 +24,8 @@ fun bindMemoDate(textView: TextView, date: Long) {
 }
 
 @BindingAdapter("bind_category_text_color")
-fun bindCategoryTextColor(textView: TextView, colorCode: String) {
-    val colorRes = Category.Color.valueOf(colorCode).resId
+fun bindCategoryTextColor(textView: TextView, colorCode: String?) {
+    val colorRes = Category.Color.valueOf(colorCode ?: return).resId
     val color = textView.context.getColorMatchVersion(colorRes)
     textView.setTextColor(color)
 }
