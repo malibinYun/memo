@@ -22,10 +22,12 @@
             android:id="@+id/constraintLayout1"
             android:layout_width="0dp"
             android:layout_height="32dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/scroll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/banner">
 
             <TextView
                 android:id="@+id/btn_complete2"
@@ -56,6 +58,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
@@ -67,8 +70,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".ui.memo.edit.MemoEditActivity"
-                tools:layout_editor_absoluteY="300dp">
+                tools:context=".ui.memo.edit.MemoEditActivity">
 
                 <TextView
                     android:id="@+id/tv_memo_alarm_date"
@@ -263,7 +265,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="409dp"
+            android:layout_width="0dp"
             android:layout_height="52dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -333,6 +335,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/banner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/admobBannerTestId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdRequest
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemoEditBinding
 import com.malibin.memo.db.entity.Image
@@ -53,6 +54,9 @@ class MemoEditActivity : AppCompatActivity(), MemoEditNavigator {
             vpMemoImages.adapter = pagerAdapter
         }
         subscribeViewModel(pagerAdapter)
+
+        val adRequest = AdRequest.Builder().build()
+        binding.banner.loadAd(adRequest)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
