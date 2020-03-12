@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityMemosBinding
 import com.malibin.memo.db.entity.Category
@@ -16,6 +18,7 @@ import com.malibin.memo.ui.category.CategoriesActivity
 import com.malibin.memo.ui.memo.edit.MemoEditActivity
 import com.malibin.memo.ui.util.getColorMatchVersion
 import com.malibin.memo.util.DeployEvent.Companion.FILTER_CATEGORY_ACT
+import com.malibin.memo.util.DeployEvent.Companion.INTERSTITIAL_AD
 import com.malibin.memo.util.DeployEvent.Companion.NEW_MEMO_EDIT_ACT
 import org.koin.android.ext.android.inject
 
@@ -25,6 +28,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
     private lateinit var memosViewModel: MemosViewModel
 
     private var lastTimeBackPressed = 0L
+    private lateinit var interstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +48,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
 
         subscribeViewModel(memosAdapter)
 
-        val adRequest = AdRequest.Builder().build()
-        binding.banner.loadAd(adRequest)
+        initAdmob(binding)
     }
 
     override fun onBackPressed() {
@@ -98,6 +101,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
             when (it.deployCode) {
                 FILTER_CATEGORY_ACT -> filterCategory()
                 NEW_MEMO_EDIT_ACT -> editMemo(null)
+                INTERSTITIAL_AD -> deployInterstitialAd()
             }
         })
     }
@@ -111,6 +115,26 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
             val categoryColor = Category.Color.valueOf(it.colorCode).resId
             window.statusBarColor = getColorMatchVersion(categoryColor)
         })
+    }
+
+    private fun initAdmob(binding: ActivityMemosBinding) {
+        val adRequest = AdRequest.Builder().build()
+        binding.banner.loadAd(adRequest)
+        interstitialAd = InterstitialAd(this).apply {
+            adUnitId = getString(R.string.admobInterstitialTestId)
+            loadAd(adRequest)
+            adListener = object : AdListener() {
+                override fun onAdClosed() {
+                    interstitialAd.loadAd(adRequest)
+                }
+            }
+        }
+    }
+
+    private fun deployInterstitialAd() {
+        if (interstitialAd.isLoaded) {
+            interstitialAd.show()
+        }
     }
 
     companion object {

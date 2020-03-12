@@ -107,9 +107,12 @@ class MemosViewModel(
             }
         }
         if (requestCode == MemoEditActivity.REQUEST_CODE) {
-            if (resultCode == MEMO_SAVED) _toastMessage.value = R.string.memo_saved
             if (resultCode == MEMO_DELETED) _toastMessage.value = R.string.memo_deleted
             if (resultCode == MEMO_EDIT_CANCELED) _toastMessage.value = R.string.edit_memo_canceled
+            if (resultCode == MEMO_SAVED) {
+                _toastMessage.value = R.string.memo_saved
+                _deployEvent.value = DeployEvent(DeployEvent.INTERSTITIAL_AD)
+            }
             refreshAll()
         }
     }

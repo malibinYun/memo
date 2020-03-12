@@ -3,6 +3,7 @@ package com.malibin.memo.util
 class DeployEvent(val deployCode: Int) {
 
     companion object {
+        const val INTERSTITIAL_AD = 0
         const val GALLERY = 1
         const val CAMERA = 2
         const val SELECT_CATEGORY_ACT = 3
