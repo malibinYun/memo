@@ -9,6 +9,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.gms.ads.AdRequest
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityGetExternalImageBinding
 import com.malibin.memo.util.GET_EXTERNAL_IMAGE_RESULT
@@ -32,6 +33,9 @@ class GetExternalImageActivity : AppCompatActivity(),
         binding.btnLoadImage.setOnClickListener { loadImageFromUrl(getInputUrlText()) }
         binding.btnGetImage.setOnClickListener { onGetImage() }
         binding.btnGetImage.isEnabled = false
+
+        val adRequest = AdRequest.Builder().build()
+        binding.banner.loadAd(adRequest)
     }
 
     override fun onLoadFailed(
