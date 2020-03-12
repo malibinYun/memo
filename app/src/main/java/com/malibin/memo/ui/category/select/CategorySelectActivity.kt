@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdRequest
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityCategorySelectBinding
 import com.malibin.memo.ui.category.CategoriesAdapter
@@ -36,6 +37,9 @@ class CategorySelectActivity : AppCompatActivity(), CategorySelectNavigator {
         }
         subscribeCategories(categorySelectViewModel, adapter)
         subscribeNewItemEvent(categorySelectViewModel)
+
+        val adRequest = AdRequest.Builder().build()
+        binding.banner.loadAd(adRequest)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
