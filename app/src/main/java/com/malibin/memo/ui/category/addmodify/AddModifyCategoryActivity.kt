@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdRequest
 import com.malibin.memo.R
 import com.malibin.memo.databinding.ActivityAddModifyCategoryBinding
 import com.malibin.memo.util.CATEGORY_SAVE_RESULT_OK
@@ -31,6 +32,9 @@ class AddModifyCategoryActivity : AppCompatActivity(), AddModifyCategoryNavigato
 
         binding.addModifyCategoryVM = viewModel
         binding.lifecycleOwner = this
+
+        val adRequest = AdRequest.Builder().build()
+        binding.banner.loadAd(adRequest)
     }
 
     override fun onCategorySaved() {
