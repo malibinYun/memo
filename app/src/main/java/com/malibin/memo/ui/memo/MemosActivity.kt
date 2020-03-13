@@ -121,7 +121,7 @@ class MemosActivity : AppCompatActivity(), MemosNavigator {
         val adRequest = AdRequest.Builder().build()
         binding.banner.loadAd(adRequest)
         interstitialAd = InterstitialAd(this).apply {
-            adUnitId = getString(R.string.admobInterstitialTestId)
+            adUnitId = getString(R.string.admobInterstitialId)
             loadAd(adRequest)
             adListener = object : AdListener() {
                 override fun onAdClosed() {
