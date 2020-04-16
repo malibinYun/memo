@@ -1,8 +1,10 @@
-# Memo
+# 모메메모장
+
+이미지와 간단한 텍스트 메모를 저장,관리할 수 있는 메모장 어플리케이션입니다.
 
 라인 앱 챌린지 메모 앱
 
-
+<a href='https://play.google.com/store/apps/details?id=com.malibin.memo&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='다운로드하기 Google Play' width=300 src='https://play.google.com/intl/ko/badges/static/images/badges/ko_badge_web_generic.png'/></a>
 
 ## Develop Environment
 
@@ -13,13 +15,17 @@
 - Mininum SDK Version - **21**
 
 ## Main Used
- - Architecture - **MVVM**
+ - Architecture - **MVVM** (Google Clean Archiecture MVVM)
 	+ **Data Binding**
 	+ **LiveData**
 	+ **ViewModel**
 	+ **Room**
 - DI
 	+ **Koin**
+- Test Code
+  * **Junit 4**
+  * **Mockito**
+  * **Mockito to Kotlin**
 
 ## Dependencies
 
