@@ -1,7 +1,10 @@
 package com.malibin.memo.db.dao
 
 import android.database.sqlite.SQLiteConstraintException
+import androidx.room.Room
+import androidx.test.platform.app.InstrumentationRegistry
 import com.malibin.memo.db.AppDatabase
+import com.malibin.memo.db.entity.Category
 import com.malibin.memo.db.entity.Image
 import com.malibin.memo.db.entity.Memo
 import org.junit.After
@@ -13,19 +16,20 @@ import org.junit.Test
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
-class MemoDaoTest : KoinTest {
+class MemoDaoTest {
 
-    private val database: AppDatabase by inject()
+    private lateinit var database: AppDatabase
     private lateinit var memoDao: MemoDao
 
     @Before
     fun initMemoDao() {
+        database = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getInstrumentation().context,
+            AppDatabase::class.java
+        ).build()
+        database.categoryDao().insertCategory(DEFAULT_CATEGORY)
+        database.categoryDao().insertCategory(NEW_CATEGORY)
         memoDao = database.memoDao()
-    }
-
-    @After
-    fun deleteCreatedMemo() {
-        memoDao.deleteMemoById(DEFAULT_MEMO.id)
     }
 
     @Test
@@ -194,5 +198,9 @@ class MemoDaoTest : KoinTest {
         private const val NEW_TITLE = "new memo"
         private const val NEW_CATEGORY_ID = "new category id"
         private const val NEW_CONTENT = "new content"
+
+        private const val DEFAULT_NAME = "default category"
+        private val DEFAULT_CATEGORY = Category(id = DEFAULT_CATEGORY_ID, name = DEFAULT_NAME)
+        private val NEW_CATEGORY = Category(id = NEW_CATEGORY_ID, name = DEFAULT_NAME)
     }
 }
