@@ -1,5 +1,7 @@
 package com.malibin.memo.db.dao
 
+import androidx.room.Room
+import androidx.test.platform.app.InstrumentationRegistry
 import com.malibin.memo.db.AppDatabase
 import com.malibin.memo.db.entity.Category
 import org.junit.After
@@ -10,13 +12,17 @@ import org.junit.Test
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
-class CategoryDaoTest : KoinTest {
+class CategoryDaoTest {
 
-    private val database: AppDatabase by inject()
+    private lateinit var database: AppDatabase
     private lateinit var categoryDao: CategoryDao
 
     @Before
     fun initCategoryDao() {
+        database = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getInstrumentation().context,
+            AppDatabase::class.java
+        ).build()
         categoryDao = database.categoryDao()
     }
 
